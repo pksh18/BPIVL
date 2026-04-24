@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chia-Yuan Chen, Ph.D. — BioMEMS & Microfluidics Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,800&family=JetBrains+Mono:wght@400;500;700&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ========================================================
+     Chia-Yuan Chen, Ph.D. — Lab site
+     Single-file build · laboratory-notebook aesthetic
+     ======================================================== */
+  :root{
+    --ink:#0e1414;
+    --paper:#f4f1ea;
+    --paper-2:#ebe6da;
+    --rule:#c9c2b2;
+    --muted:#5b6060;
+    --accent:#c8452d;
+    --accent-2:#1f4b4a;
+    --highlight:#e9d66b;
+    --grid-line:rgba(14,20,20,0.055);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 28px 28px,
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 28px 28px,
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter Tight', system-ui, sans-serif;
+    font-size:16px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode:multiply;
+    opacity:.55;
+    z-index:1;
+  }
+  main, header, footer{position:relative; z-index:2}
+
+  /* nav */
+  .topbar{
+    border-bottom:1px solid var(--ink);
+    background:var(--paper);
+    position:sticky; top:0; z-index:50;
+    backdrop-filter:blur(4px);
+  }
+  .topbar-inner{
+    max-width:1240px; margin:0 auto;
+    padding:14px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:24px; flex-wrap:wrap;
+  }
+  .brand{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase;
+    display:flex; align-items:center; gap:12px;
+    color:var(--ink); text-decoration:none; cursor:pointer;
+  }
+  .brand-dot{
+    width:10px; height:10px; background:var(--accent);
+    border-radius:50%;
+    box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--ink);
+    animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1); box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--ink), 0 0 0 4px rgba(200,69,45,0)}
+    50%{transform:scale(1.1); box-shadow:0 0 0 3px var(--paper), 0 0 0 4px var(--ink), 0 0 0 10px rgba(200,69,45,0.15)}
+  }
+  .nav{display:flex; gap:4px; flex-wrap:wrap}
+  .nav button{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px; font-weight:500;
+    letter-spacing:.12em; text-transform:uppercase;
+    color:var(--ink); background:transparent;
+    padding:8px 14px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .nav button:hover{background:var(--ink); color:var(--paper)}
+  .nav button.active{border-color:var(--ink)}
+
+  .page{
+    max-width:1240px;
+    margin:0 auto;
+    padding:48px 32px 96px;
+    display:none;
+  }
+  .page.active{display:block; animation:fadeUp .5s ease}
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(12px)}
+    to{opacity:1; transform:none}
+  }
+
+  .slug{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--muted);
+    display:flex; gap:18px; align-items:center; flex-wrap:wrap;
+    margin-bottom:24px;
+  }
+  .slug::before{content:""; width:40px; height:1px; background:var(--ink)}
+
+  h1.page-title{
+    font-family:'Fraunces', serif;
+    font-weight:800; font-style:italic;
+    font-size:clamp(48px, 7vw, 96px);
+    line-height:.95; margin:0 0 12px;
+    letter-spacing:-.02em;
+  }
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(28px, 3vw, 40px);
+    margin:0 0 18px;
+    letter-spacing:-.01em;
+  }
+  h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:22px;
+    margin:0 0 8px;
+  }
+  .tag-mono{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* hero */
+  .hero{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap:56px;
+    align-items:end;
+    padding-top:36px;
+    padding-bottom:72px;
+    border-bottom:1px solid var(--ink);
+    position:relative;
+  }
+  @media (max-width:900px){.hero{grid-template-columns:1fr; gap:28px}}
+
+  .hero-name{
+    font-family:'Fraunces', serif;
+    font-weight:800;
+    font-size:clamp(56px, 9vw, 128px);
+    line-height:.88;
+    letter-spacing:-.03em;
+    margin:0;
+  }
+  .hero-name em{
+    font-style:italic; font-weight:400;
+    color:var(--accent);
+  }
+  .hero-role{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    margin-top:28px;
+  }
+  .hero-role span{display:block; color:var(--muted); margin-top:4px}
+
+  .hero-card{
+    border:1px solid var(--ink);
+    background:var(--paper);
+    padding:24px;
+    position:relative;
+    box-shadow:4px 4px 0 var(--ink);
+  }
+  .hero-card::after{
+    content:""; position:absolute; top:8px; right:8px; width:14px; height:14px;
+    background:var(--accent);
+    border-radius:50%;
+    box-shadow:0 0 0 4px var(--paper), 0 0 0 5px var(--ink);
+  }
+  .kv{
+    display:grid; grid-template-columns:110px 1fr; gap:10px 18px;
+    font-size:14px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--rule);
+  }
+  .kv:last-child{border-bottom:none}
+  .kv .k{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted);
+    padding-top:2px;
+  }
+
+  .intro-grid{
+    display:grid; grid-template-columns: 2fr 1fr;
+    gap:48px;
+    padding:48px 0;
+    border-bottom:1px solid var(--ink);
+  }
+  @media (max-width:900px){.intro-grid{grid-template-columns:1fr}}
+  .lede{
+    font-family:'Fraunces', serif;
+    font-size:clamp(22px, 2.4vw, 30px);
+    line-height:1.35; font-weight:400;
+    letter-spacing:-.005em;
+  }
+  .lede em{font-style:italic; color:var(--accent-2)}
+
+  .areas{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:0;
+    border-bottom:1px solid var(--ink);
+  }
+  @media (max-width:900px){.areas{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.areas{grid-template-columns:1fr}}
+  .area{
+    padding:28px 24px 32px;
+    border-right:1px solid var(--ink);
+    min-height:200px;
+    transition:background .2s;
+  }
+  .area:last-child{border-right:none}
+  .area:hover{background:var(--paper-2)}
+  .area .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.18em;
+    color:var(--muted);
+  }
+  .area h3{margin-top:14px; margin-bottom:6px}
+  .area p{font-size:14px; color:var(--muted); margin:0}
+
+  .metrics{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:0;
+    border-bottom:1px solid var(--ink);
+  }
+  @media (max-width:700px){.metrics{grid-template-columns:repeat(2,1fr)}}
+  .metric{
+    padding:36px 24px;
+    border-right:1px solid var(--ink);
+    text-align:left;
+    position:relative;
+    overflow:hidden;
+  }
+  .metric:last-child{border-right:none}
+  .metric::before{
+    content:""; position:absolute; top:12px; right:12px;
+    width:8px; height:8px;
+    background:var(--accent);
+    border-radius:50%;
+  }
+  .metric .n{
+    font-family:'Fraunces', serif;
+    font-weight:800; font-style:italic;
+    font-size:56px; line-height:1;
+    letter-spacing:-.03em;
+  }
+  .metric .n sup{
+    font-size:18px; color:var(--accent); font-style:normal; vertical-align:top;
+  }
+  .metric .l{
+    margin-top:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  .section{
+    padding:56px 0;
+    border-bottom:1px solid var(--ink);
+  }
+  .section:last-of-type{border-bottom:none}
+  .section-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    gap:24px; margin-bottom:32px; flex-wrap:wrap;
+  }
+  .section-head .idx{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  .idx a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--ink); cursor:pointer}
+
+  .feat-pubs{
+    display:grid; grid-template-columns:repeat(3, 1fr);
+    gap:0;
+    border-top:1px solid var(--ink);
+  }
+  @media (max-width:900px){.feat-pubs{grid-template-columns:1fr}}
+  .feat{
+    padding:24px;
+    border-right:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    background:var(--paper);
+    transition:background .15s;
+  }
+  .feat:last-child{border-right:none}
+  .feat:hover{background:var(--paper-2)}
+  @media (max-width:900px){.feat{border-right:none}}
+  .feat .year{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.16em; color:var(--muted);
+  }
+  .feat .venue{
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:14px; margin-top:6px;
+  }
+  .feat .t{
+    font-family:'Fraunces', serif;
+    font-size:20px; line-height:1.25;
+    margin:12px 0 10px;
+  }
+  .feat .badge{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    background:var(--highlight); color:var(--ink);
+    padding:3px 8px;
+    border:1px solid var(--ink);
+  }
+
+  .pub-list{
+    list-style:none; padding:0; margin:0;
+    border-top:1px solid var(--ink);
+  }
+  .pub{
+    display:grid;
+    grid-template-columns: 56px 90px 1fr auto;
+    gap:20px;
+    padding:20px 8px;
+    border-bottom:1px solid var(--rule);
+    align-items:baseline;
+    transition:background .12s;
+  }
+  @media (max-width:820px){
+    .pub{grid-template-columns: 40px 70px 1fr; }
+    .pub .meta-right{display:none}
+  }
+  .pub:hover{background:var(--paper-2)}
+  .pub .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.1em;
+    color:var(--muted);
+    padding-top:3px;
+  }
+  .pub .yr{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.12em;
+    color:var(--ink);
+    padding-top:3px;
+  }
+  .pub .body .t{
+    font-family:'Fraunces', serif;
+    font-size:19px; line-height:1.3;
+    margin:0 0 6px;
+  }
+  .pub .body .a{
+    font-size:13.5px; color:var(--muted); margin:0 0 4px;
+  }
+  .pub .body .v{
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:14px; color:var(--ink);
+  }
+  .pub .body .v b{font-style:normal; font-weight:600}
+  .pub .meta-right{
+    text-align:right;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px; letter-spacing:.1em;
+    color:var(--muted);
+    padding-top:4px;
+    min-width:120px;
+  }
+  .pub .meta-right .if{color:var(--accent)}
+
+  .highlight-tag{
+    display:inline-block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:9.5px; letter-spacing:.12em; text-transform:uppercase;
+    background:var(--ink); color:var(--paper);
+    padding:2px 6px;
+    margin-left:6px;
+    vertical-align:2px;
+  }
+  .cover-tag{background:var(--accent); color:var(--paper)}
+
+  .yr-head{
+    grid-column:1 / -1;
+    padding:28px 0 10px;
+    border-bottom:none;
+    display:flex; align-items:center; gap:18px;
+  }
+  .yr-head .big{
+    font-family:'Fraunces', serif;
+    font-style:italic; font-weight:800;
+    font-size:44px; line-height:1;
+    color:var(--ink);
+  }
+  .yr-head .rule-line{flex:1; height:1px; background:var(--ink)}
+
+  .cohort{
+    display:grid;
+    grid-template-columns: 120px 1fr;
+    gap:20px;
+    padding:18px 0;
+    border-bottom:1px dashed var(--rule);
+  }
+  .cohort .cy{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent-2);
+  }
+  .cohort .list{font-size:14.5px; line-height:1.7}
+
+  .phd-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr);
+    gap:0;
+    border-top:1px solid var(--ink);
+    border-left:1px solid var(--ink);
+  }
+  @media (max-width:820px){.phd-grid{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:520px){.phd-grid{grid-template-columns:1fr}}
+  .phd{
+    padding:22px;
+    border-right:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    background:var(--paper);
+    transition:background .15s;
+  }
+  .phd:hover{background:var(--paper-2)}
+  .phd .cy{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.14em; color:var(--muted);
+  }
+  .phd .nm{
+    font-family:'Fraunces', serif;
+    font-size:22px; margin:6px 0 4px;
+  }
+  .phd .dest{font-size:13px; color:var(--muted); font-style:italic}
+
+  .award{
+    display:grid; grid-template-columns: 80px 1fr;
+    gap:24px;
+    padding:20px 0;
+    border-bottom:1px dashed var(--rule);
+  }
+  .award .yr{
+    font-family:'Fraunces', serif;
+    font-style:italic; font-weight:800; font-size:32px;
+    line-height:1; color:var(--accent);
+  }
+  .award .tt{font-family:'Fraunces', serif; font-size:18px; margin:0 0 4px}
+  .award .or{font-size:13.5px; color:var(--muted)}
+
+  .patent{
+    padding:18px 0;
+    border-bottom:1px dashed var(--rule);
+    display:grid;
+    grid-template-columns: 60px 1fr;
+    gap:18px;
+  }
+  .patent .p-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px; letter-spacing:.1em;
+    color:var(--muted); padding-top:4px;
+  }
+  .patent .p-tt{font-family:'Fraunces', serif; font-size:17px; margin:0 0 4px}
+  .patent .p-meta{font-size:12.5px; color:var(--muted); font-family:'JetBrains Mono', monospace; letter-spacing:.05em}
+
+  .xp{
+    display:grid; grid-template-columns: 200px 1fr;
+    gap:24px;
+    padding:18px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  @media (max-width:700px){.xp{grid-template-columns:1fr}}
+  .xp .when{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted);
+  }
+  .xp .what{font-family:'Fraunces', serif; font-size:18px; margin:0 0 3px}
+  .xp .where{font-size:14px; color:var(--muted)}
+
+  footer{
+    border-top:1px solid var(--ink);
+    background:var(--paper);
+    padding:36px 32px;
+  }
+  .footer-inner{
+    max-width:1240px; margin:0 auto;
+    display:flex; justify-content:space-between; flex-wrap:wrap;
+    gap:20px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  .filter-bar{
+    display:flex; flex-wrap:wrap; gap:6px;
+    margin:24px 0 8px;
+    padding:16px 0;
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--rule);
+  }
+  .pill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    padding:7px 14px;
+    border:1px solid var(--ink);
+    background:var(--paper);
+    cursor:pointer;
+    transition:all .15s;
+    color:var(--ink);
+  }
+  .pill:hover{background:var(--ink); color:var(--paper)}
+  .pill.on{background:var(--ink); color:var(--paper)}
+  .pill .ct{margin-left:6px; color:var(--muted)}
+  .pill.on .ct{color:var(--paper-2)}
+
+  .figure-block{
+    display:grid; grid-template-columns:1fr 1fr; gap:0;
+    border-top:1px solid var(--ink);
+    border-bottom:1px solid var(--ink);
+    margin:0;
+  }
+  @media (max-width:820px){.figure-block{grid-template-columns:1fr}}
+  .figure-block > div{padding:36px 28px; background:var(--paper)}
+  .figure-block > div:first-child{border-right:1px solid var(--ink)}
+  @media (max-width:820px){
+    .figure-block > div:first-child{border-right:none; border-bottom:1px solid var(--ink)}
+  }
+  .figure-caption{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted);
+    margin-top:18px;
+  }
+  .lab-svg{width:100%; height:auto; display:block}
+
+  .mono{font-family:'JetBrains Mono', monospace; letter-spacing:.05em}
+  .muted{color:var(--muted)}
+
+  /* scroll-animate */
+  .reveal{opacity:0; transform:translateY(20px); transition:all .6s ease}
+  .reveal.in{opacity:1; transform:none}
+
+  /* cilia animation */
+  @keyframes beat1{
+    0%,100%{d:path("M90 180 Q95 150 105 130")}
+    50%{d:path("M90 180 Q80 150 75 130")}
+  }
+  .cilium{
+    animation:sway 2s ease-in-out infinite;
+    transform-origin:bottom center;
+  }
+  @keyframes sway{
+    0%,100%{transform:rotate(-8deg)}
+    50%{transform:rotate(8deg)}
+  }
+  .cilium:nth-child(2){animation-delay:.15s}
+  .cilium:nth-child(3){animation-delay:.3s}
+  .cilium:nth-child(4){animation-delay:.45s}
+  .cilium:nth-child(5){animation-delay:.6s}
+  .cilium:nth-child(6){animation-delay:.75s}
+
+  /* zebrafish swim */
+  @keyframes swim{
+    0%{transform:translate(0,0)}
+    25%{transform:translate(40px,-8px)}
+    50%{transform:translate(80px,0)}
+    75%{transform:translate(40px,8px)}
+    100%{transform:translate(0,0)}
+  }
+  .fish{animation:swim 6s ease-in-out infinite}
+
+  /* flow particle */
+  @keyframes flow{
+    0%{offset-distance:0%; opacity:0}
+    10%{opacity:1}
+    90%{opacity:1}
+    100%{offset-distance:100%; opacity:0}
+  }
+
+  /* scroll to top */
+  .to-top{
+    position:fixed; bottom:24px; right:24px; z-index:100;
+    width:44px; height:44px;
+    border:1px solid var(--ink);
+    background:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    cursor:pointer;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .to-top.show{opacity:1; pointer-events:auto}
+  .to-top:hover{background:var(--ink); color:var(--paper)}
+
+  /* printing helper */
+  @media print{
+    .topbar, .to-top, footer{display:none}
+    .page{display:block !important; padding:0}
+    body::before{display:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" onclick="go('home')">
+      <span class="brand-dot"></span>CHIA-YUAN CHEN / LAB
+    </a>
+    <nav class="nav">
+      <button onclick="go('home')" data-nav="home" class="active">Home</button>
+      <button onclick="go('research')" data-nav="research">Research</button>
+      <button onclick="go('publications')" data-nav="publications">Publications</button>
+      <button onclick="go('teaching')" data-nav="teaching">Teaching</button>
+      <button onclick="go('cv')" data-nav="cv">CV & Awards</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============ HOME ============ -->
+<main class="page active" id="home">
+
+  <div class="slug">
+    <span>FILE/ 001 — PRINCIPAL INVESTIGATOR</span>
+    <span>NCKU · MECHANICAL ENG.</span>
+    <span>EST. 2012</span>
+  </div>
+
+  <section class="hero">
+    <div>
+      <h1 class="hero-name">Chia-Yuan<br>Chen, <em>Ph.D.</em></h1>
+      <div class="hero-role">
+        Full Professor · Department of Mechanical Engineering
+        <span>National Cheng Kung University · Tainan, Taiwan</span>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="kv"><div class="k">Field</div><div>BioMEMS · Microfluidics</div></div>
+      <div class="kv"><div class="k">Affiliation</div><div>NCKU — Mechanical Eng.</div></div>
+      <div class="kv"><div class="k">PhD</div><div>Carnegie Mellon University, 2012</div></div>
+      <div class="kv"><div class="k">Fellow</div><div>Royal Society of Chemistry (2022)</div></div>
+      <div class="kv"><div class="k">Office</div><div>No.1 University Rd, Tainan 701</div></div>
+      <div class="kv"><div class="k">Email</div><div class="mono">chiayuac@mail.ncku.edu.tw</div></div>
+      <div class="kv"><div class="k">Tel</div><div class="mono">+886-6-2757575 ext. 62169</div></div>
+    </div>
+  </section>
+
+  <section class="intro-grid reveal">
+    <p class="lede">
+      The lab designs <em>microscale machines</em> and <em>soft actuators</em> —
+      artificial cilia, untethered microrobots, and microfluidic platforms — to
+      manipulate living organisms, visualize flows, and decode the hemodynamics of
+      the heart and great vessels.
+    </p>
+    <div>
+      <div class="tag-mono">RESEARCH SCOPE</div>
+      <p style="margin-top:10px; font-size:14.5px;">
+        From the sperm of zebrafish to the pulmonary arteries of patients — we build the
+        instruments that make micro-flow measurable, programmable, and clinically
+        meaningful. Our work has appeared on the covers of <i>Lab on a Chip</i>,
+        <i>Chemical Engineering Journal</i>, <i>Advanced Materials Technologies</i>,
+        and <i>Advanced Intelligent Systems</i>.
+      </p>
+    </div>
+  </section>
+
+  <section class="metrics reveal">
+    <div class="metric"><div class="n">50<sup>+</sup></div><div class="l">Peer-reviewed<br>publications</div></div>
+    <div class="metric"><div class="n">6</div><div class="l">Patents granted<br>US & Taiwan</div></div>
+    <div class="metric"><div class="n">21</div><div class="l">Major awards<br>as PI</div></div>
+    <div class="metric"><div class="n">8</div><div class="l">Journal covers<br>& editor's picks</div></div>
+  </section>
+
+  <section class="section reveal">
+    <div class="section-head">
+      <div>
+        <div class="tag-mono">§ 01 — RESEARCH AREAS</div>
+        <h2>Four lines of inquiry.</h2>
+      </div>
+      <div class="idx">CH. 001 / 004</div>
+    </div>
+
+    <div class="areas">
+      <div class="area">
+        <div class="num">01 / 04</div>
+        <h3>BioMEMS</h3>
+        <p>Biomedical micro-electro-mechanical systems for cell and organism-scale experimentation.</p>
+      </div>
+      <div class="area">
+        <div class="num">02 / 04</div>
+        <h3>Microfabrication</h3>
+        <p>Soft lithography, SMA-actuated devices, and building-block microrobot design.</p>
+      </div>
+      <div class="area">
+        <div class="num">03 / 04</div>
+        <h3>Hemodynamics</h3>
+        <p>Flow analysis in aortic aneurysms, pulmonary arteries, and embryonic great vessels.</p>
+      </div>
+      <div class="area">
+        <div class="num">04 / 04</div>
+        <h3>Flow Visualization</h3>
+        <p>μPIV, OCT-μPIV, stereoscopic PIV, and optical coherence imaging of pulsatile flow.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIAGRAMS -->
+  <section class="figure-block reveal">
+    <div>
+      <div class="tag-mono">FIG. 01 — ARTIFICIAL CILIA MICROMIXER</div>
+      <svg class="lab-svg" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="margin-top:18px">
+        <defs>
+          <pattern id="dots" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+            <circle cx="1.5" cy="1.5" r="1" fill="#c9c2b2"/>
+          </pattern>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" fill="#1f4b4a"/>
+          </marker>
+        </defs>
+        <text x="0" y="20" font-family="Fraunces" font-style="italic" font-size="16" fill="#0e1414">Chaotic mixing via 3-D vortical flow patterns</text>
+        <rect x="30" y="80" width="440" height="100" fill="url(#dots)" stroke="#0e1414" stroke-width="1.5"/>
+        <path d="M30 100 L-10 80 M30 160 L-10 180" stroke="#0e1414" stroke-width="1.5" fill="none"/>
+        <path d="M470 130 L510 130" stroke="#0e1414" stroke-width="1.5"/>
+        <g stroke="#c8452d" stroke-width="2" fill="none" stroke-linecap="round">
+          <path class="cilium" d="M90 180 Q95 150 105 130"/>
+          <path class="cilium" d="M150 180 Q140 150 130 130"/>
+          <path class="cilium" d="M210 180 Q215 150 225 130"/>
+          <path class="cilium" d="M270 180 Q260 150 250 130"/>
+          <path class="cilium" d="M330 180 Q335 150 345 130"/>
+          <path class="cilium" d="M390 180 Q380 150 370 130"/>
+        </g>
+        <g fill="#0e1414">
+          <circle cx="90" cy="180" r="2.5"/><circle cx="150" cy="180" r="2.5"/>
+          <circle cx="210" cy="180" r="2.5"/><circle cx="270" cy="180" r="2.5"/>
+          <circle cx="330" cy="180" r="2.5"/><circle cx="390" cy="180" r="2.5"/>
+        </g>
+        <rect x="200" y="210" width="100" height="30" fill="#0e1414"/>
+        <text x="250" y="230" text-anchor="middle" fill="#f4f1ea" font-family="JetBrains Mono" font-size="10" letter-spacing="2">MAGNET</text>
+        <g stroke="#1f4b4a" stroke-width="1.5" fill="none" marker-end="url(#arr)">
+          <path d="M50 110 Q100 105 140 115"/>
+          <path d="M50 155 Q100 160 140 150"/>
+          <path d="M300 130 L450 130"/>
+        </g>
+        <text x="0" y="65" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5" fill="#5b6060">INLET A</text>
+        <text x="0" y="205" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5" fill="#5b6060">INLET B</text>
+        <text x="460" y="115" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5" fill="#5b6060">OUTLET</text>
+      </svg>
+      <p class="figure-caption">Lab-on-a-chip (2013) · Chem. Eng. J. (2015, cover)</p>
+    </div>
+
+    <div>
+      <div class="tag-mono">FIG. 02 — ZEBRAFISH MICROFLUIDICS</div>
+      <svg class="lab-svg" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="margin-top:18px">
+        <text x="25" y="20" font-family="Fraunces" font-style="italic" font-size="16" fill="#0e1414">Non-invasive capture of zebrafish larvae</text>
+        <rect x="20" y="80" width="460" height="120" fill="none" stroke="#0e1414" stroke-width="1.5"/>
+        <path d="M20 140 L120 140 Q160 140 160 100 Q160 60 200 60 L260 60 Q300 60 300 100 Q300 140 340 140 L480 140"
+              fill="none" stroke="#c8452d" stroke-width="2" stroke-dasharray="4 3"/>
+        <g class="fish" transform="translate(230,140)">
+          <ellipse cx="0" cy="0" rx="22" ry="8" fill="#1f4b4a"/>
+          <path d="M22 0 L36 -10 L36 10 Z" fill="#1f4b4a"/>
+          <circle cx="-12" cy="-2" r="2" fill="#f4f1ea"/>
+        </g>
+        <line x1="20" y1="230" x2="120" y2="230" stroke="#0e1414" stroke-width="1.2"/>
+        <line x1="20" y1="225" x2="20" y2="235" stroke="#0e1414" stroke-width="1.2"/>
+        <line x1="120" y1="225" x2="120" y2="235" stroke="#0e1414" stroke-width="1.2"/>
+        <text x="70" y="248" text-anchor="middle" font-family="JetBrains Mono" font-size="10" letter-spacing="1" fill="#5b6060">500 μm</text>
+        <text x="25" y="75" font-family="JetBrains Mono" font-size="9" letter-spacing="1.5" fill="#5b6060">PDMS CHANNEL — SERPENTINE GEOMETRY</text>
+      </svg>
+      <p class="figure-caption">Sci. Rep. (2016) · Biomicrofluidics (2018, Editor's Pick) · Lab Chip (2019, back cover)</p>
+    </div>
+  </section>
+
+  <!-- additional figure row -->
+  <section class="figure-block reveal" style="border-top:none">
+    <div>
+      <div class="tag-mono">FIG. 03 — HEMODYNAMIC FLOW ANALYSIS</div>
+      <svg class="lab-svg" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="margin-top:18px">
+        <text x="0" y="20" font-family="Fraunces" font-style="italic" font-size="16" fill="#0e1414">Abdominal aortic aneurysm — PIV + CFD</text>
+        <!-- aneurysm vessel -->
+        <path d="M60 140 L160 140 Q200 140 210 110 Q220 80 260 75 Q310 70 330 105 Q345 135 320 170 Q300 195 260 200 Q220 205 200 175 Q190 155 170 155 L60 155 Z"
+              fill="none" stroke="#0e1414" stroke-width="2"/>
+        <!-- blood flow streamlines -->
+        <g stroke="#c8452d" stroke-width="1.4" fill="none" opacity=".75">
+          <path d="M80 148 Q160 148 200 145"/>
+          <path d="M80 152 Q160 152 200 150"/>
+          <path d="M210 140 Q240 125 260 120 Q290 118 310 135 Q320 155 300 175 Q275 185 245 180 Q215 170 205 155"/>
+          <path d="M215 145 Q255 140 285 150 Q295 160 285 170 Q255 172 225 162"/>
+        </g>
+        <!-- velocity legend -->
+        <g>
+          <rect x="380" y="70" width="90" height="10" fill="url(#vgrad)"/>
+          <defs>
+            <linearGradient id="vgrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#1f4b4a"/>
+              <stop offset="50%" stop-color="#e9d66b"/>
+              <stop offset="100%" stop-color="#c8452d"/>
+            </linearGradient>
+          </defs>
+          <text x="380" y="65" font-family="JetBrains Mono" font-size="9" fill="#5b6060">VELOCITY (m/s)</text>
+          <text x="380" y="95" font-family="JetBrains Mono" font-size="9" fill="#5b6060">0</text>
+          <text x="460" y="95" font-family="JetBrains Mono" font-size="9" fill="#5b6060" text-anchor="end">1.2</text>
+        </g>
+        <!-- recirculation zone label -->
+        <circle cx="260" cy="140" r="22" fill="none" stroke="#1f4b4a" stroke-dasharray="3 2" stroke-width="1.2"/>
+        <text x="260" y="145" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#1f4b4a" letter-spacing="1">RECIRC</text>
+        <!-- annotations -->
+        <line x1="70" y1="130" x2="70" y2="110" stroke="#0e1414" stroke-width="1"/>
+        <text x="70" y="105" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#5b6060">INFLOW</text>
+        <text x="225" y="240" font-family="JetBrains Mono" font-size="9" fill="#5b6060" letter-spacing="1.5">PATIENT-SPECIFIC GEOMETRY</text>
+        <text x="225" y="258" font-family="JetBrains Mono" font-size="9" fill="#5b6060" letter-spacing="1.5">ASME J. BIOMECH. ENG. · 2014</text>
+      </svg>
+      <p class="figure-caption">J. Biomech. Eng. (2014) · Ann. Biomed. Eng. (2018)</p>
+    </div>
+
+    <div>
+      <div class="tag-mono">FIG. 04 — MAGNETIC MICROROBOT</div>
+      <svg class="lab-svg" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" style="margin-top:18px">
+        <text x="0" y="20" font-family="Fraunces" font-style="italic" font-size="16" fill="#0e1414">Untethered magnetic microgripper</text>
+        <!-- workspace -->
+        <rect x="30" y="60" width="440" height="180" fill="none" stroke="#0e1414" stroke-width="1.5"/>
+        <!-- grid -->
+        <g stroke="#c9c2b2" stroke-width=".5">
+          <line x1="30" y1="100" x2="470" y2="100"/>
+          <line x1="30" y1="140" x2="470" y2="140"/>
+          <line x1="30" y1="180" x2="470" y2="180"/>
+          <line x1="120" y1="60" x2="120" y2="240"/>
+          <line x1="250" y1="60" x2="250" y2="240"/>
+          <line x1="380" y1="60" x2="380" y2="240"/>
+        </g>
+        <!-- microgripper -->
+        <g transform="translate(250,150)">
+          <circle cx="0" cy="0" r="14" fill="#c8452d" stroke="#0e1414" stroke-width="1.5"/>
+          <path d="M-14 0 L-28 -10 M-14 0 L-28 10" stroke="#0e1414" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M14 0 L28 -10 M14 0 L28 10" stroke="#0e1414" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="0" cy="0" r="4" fill="#0e1414"/>
+        </g>
+        <!-- target objects -->
+        <circle cx="120" cy="100" r="6" fill="#1f4b4a"/>
+        <circle cx="380" cy="200" r="6" fill="#1f4b4a"/>
+        <circle cx="380" cy="100" r="6" fill="#1f4b4a" opacity=".4"/>
+        <!-- trajectory -->
+        <path d="M380 100 Q320 100 250 150" fill="none" stroke="#c8452d" stroke-width="1.2" stroke-dasharray="4 3" opacity=".6"/>
+        <!-- magnetic field indicators -->
+        <g stroke="#1f4b4a" stroke-width="1" fill="none" opacity=".5">
+          <path d="M30 70 Q50 60 70 70"/>
+          <path d="M440 70 Q460 60 470 70"/>
+          <path d="M30 235 Q50 245 70 235"/>
+          <path d="M440 235 Q460 245 470 235"/>
+        </g>
+        <text x="45" y="260" font-family="JetBrains Mono" font-size="9" fill="#5b6060" letter-spacing="1.5">EXTERNAL MAGNETIC FIELD (B)</text>
+        <text x="125" y="92" font-family="JetBrains Mono" font-size="8" fill="#5b6060">T1</text>
+        <text x="385" y="192" font-family="JetBrains Mono" font-size="8" fill="#5b6060">T2</text>
+      </svg>
+      <p class="figure-caption">Adv. Mater. Technol. (2022, 2024) · Adv. Intell. Syst. (2024)</p>
+    </div>
+  </section>
+
+  <section class="section reveal">
+    <div class="section-head">
+      <div>
+        <div class="tag-mono">§ 02 — FEATURED WORK</div>
+        <h2>Recent selected publications.</h2>
+      </div>
+      <div class="idx"><a onclick="go('publications')">VIEW ALL →</a></div>
+    </div>
+
+    <div class="feat-pubs">
+      <article class="feat">
+        <div class="year">2024</div>
+        <div class="venue">Advanced Intelligent Systems</div>
+        <h3 class="t">A stepwise control of multiple magnetic millirobots for flow manipulation applications</h3>
+        <p class="muted" style="font-size:13px; margin:0 0 10px">Loganathan, Hsieh, Ou, Chen*</p>
+        <span class="badge">JOURNAL BACK COVER</span>
+      </article>
+
+      <article class="feat">
+        <div class="year">2024</div>
+        <div class="venue">Advanced Materials Technologies</div>
+        <h3 class="t">An untethered magnetic microgripper for high-throughput micromanipulation</h3>
+        <p class="muted" style="font-size:13px; margin:0 0 10px">Loganathan, Chaung, Lu, Cheng, Chen*</p>
+        <span class="badge">OUTSIDE BACK COVER</span>
+      </article>
+
+      <article class="feat">
+        <div class="year">2023</div>
+        <div class="venue">Lab on a Chip</div>
+        <h3 class="t">Behaviour responses of zebrafish with sound stimuli in microfluidics</h3>
+        <p class="muted" style="font-size:13px; margin:0 0 10px">Loganathan, Wu, Chen*</p>
+        <span class="badge">OUTSIDE BACK COVER</span>
+      </article>
+    </div>
+  </section>
+
+  <section class="section reveal" style="border-bottom:none">
+    <div class="section-head">
+      <div>
+        <div class="tag-mono">§ 03 — RECOGNITION</div>
+        <h2>Selected honors.</h2>
+      </div>
+      <div class="idx"><a onclick="go('cv')">FULL CV →</a></div>
+    </div>
+
+    <div class="award"><div class="yr">'22</div><div><h3 class="tt">Fellow, The Royal Society of Chemistry</h3><div class="or">FRSC — recognition for sustained contributions to the chemical sciences</div></div></div>
+    <div class="award"><div class="yr">'20</div><div><h3 class="tt">Outstanding Engineering Professor</h3><div class="or">Chinese Society of Mechanical Engineers, Kaohsiung Branch</div></div></div>
+    <div class="award"><div class="yr">'18</div><div><h3 class="tt">Ta-You Wu Memorial Award</h3><div class="or">Ministry of Science and Technology, Taiwan · 吳大猷先生紀念獎</div></div></div>
+    <div class="award"><div class="yr">'16</div><div><h3 class="tt">Outstanding Young Scholar Award</h3><div class="or">Ministry of Science and Technology, Taiwan (3-year grant)</div></div></div>
+  </section>
+
+</main>
+
+<!-- ============ RESEARCH ============ -->
+<main class="page" id="research">
+
+  <div class="slug">
+    <span>FILE/ 002 — RESEARCH PROGRAM</span>
+    <span>FOUR AREAS · ONE LAB</span>
+  </div>
+
+  <h1 class="page-title">Research</h1>
+  <p class="lede" style="max-width:820px; margin-top:20px">
+    We build small machines that do <em>big things</em> — micromixers,
+    microgrippers, untethered magnetic microrobots, and flow-visualization
+    systems that turn biology into quantifiable fluid dynamics.
+  </p>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="tag-mono">AREA 01 / BioMEMS</div><h2>Biomedical micro-electro-mechanical systems</h2></div>
+      <div class="idx">生醫微機電</div>
+    </div>
+    <div class="intro-grid" style="padding:0; border-bottom:none">
+      <div>
+        <p>BioMEMS are at the heart of everything we do. From serpentine microchannels that capture and orient zebrafish larvae without harming them, to artificial cilia arrays that activate sperm motility, our devices turn the microscale into a programmable experimental stage.</p>
+        <p>A recent line of work uses shape memory alloy (SMA) actuation to build miniaturized biomaterial-printing nozzles and catheter-intervention actuators — devices small enough to enter the vasculature yet robust enough for real biomedical tasks.</p>
+      </div>
+      <div>
+        <div class="tag-mono">KEY PAPERS</div>
+        <ul style="list-style:none; padding:0; margin:12px 0 0; font-size:14px; line-height:1.8">
+          <li>— Huang et al., <i>Sensors & Actuators B</i>, 2017</li>
+          <li>— Mani et al., <i>Sci. Reports</i>, 2016</li>
+          <li>— Lu et al., <i>Cardiovasc. Eng. Tech.</i>, 2018</li>
+          <li>— Mani et al., <i>Biochip J.</i>, 2020</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="tag-mono">AREA 02 / MICROFABRICATION</div><h2>Artificial cilia & magnetic microrobots</h2></div>
+      <div class="idx">微系統製造技術</div>
+    </div>
+    <div class="intro-grid" style="padding:0; border-bottom:none">
+      <div>
+        <p>The lab has spent over a decade refining magnetically-actuated artificial cilia — PDMS-based hair-like structures that beat, bundle, and school like biological cilia. By distributing them in fish-schooling patterns or driving them asymmetrically, we induce 3-D vortical flow inside 2-D microchannels for high-performance mixing and propulsion.</p>
+        <p>More recently, we've scaled up to untethered microrobots and microgrippers — millimeter-scale agents controlled by external magnetic fields, with building-block modularity and multi-robot choreography for flow manipulation.</p>
+      </div>
+      <div>
+        <div class="tag-mono">KEY PAPERS</div>
+        <ul style="list-style:none; padding:0; margin:12px 0 0; font-size:14px; line-height:1.8">
+          <li>— Chen et al., <i>Lab on a Chip</i>, 2013</li>
+          <li>— Chen et al., <i>Chem. Eng. J.</i>, 2015 <span class="highlight-tag cover-tag">COVER</span></li>
+          <li>— Loganathan et al., <i>Adv. Mater. Tech.</i>, 2022</li>
+          <li>— Loganathan et al., <i>Adv. Intell. Syst.</i>, 2024</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="tag-mono">AREA 03 / HEMODYNAMICS</div><h2>Cardiovascular flow in disease & development</h2></div>
+      <div class="idx">心血管疾病血液動力學分析</div>
+    </div>
+    <div class="intro-grid" style="padding:0; border-bottom:none">
+      <div>
+        <p>On the clinical side, the lab analyzes patient-specific hemodynamics — abdominal aortic aneurysms, pulmonary arteries, stent-graft endoleaks — using a combination of CFD modeling and particle image velocimetry. We also study zebrafish cardiovascular function as a high-throughput surrogate for drug and additive screening.</p>
+        <p>A long-running collaboration with Prof. Kerem Pekkan (CMU → Koç University) applies these tools to embryonic great-vessel microcirculation and neonatal cardiopulmonary bypass.</p>
+      </div>
+      <div>
+        <div class="tag-mono">KEY PAPERS</div>
+        <ul style="list-style:none; padding:0; margin:12px 0 0; font-size:14px; line-height:1.8">
+          <li>— Chen et al., <i>J. Biomech. Eng.</i> (ASME), 2014</li>
+          <li>— Lu et al., <i>Comp. Math. Meth. Med.</i>, 2016</li>
+          <li>— Bordones et al., <i>Ann. Biomed. Eng.</i>, 2018</li>
+          <li>— Subendran et al., <i>Sci. Reports</i>, 2021</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="border-bottom:none">
+    <div class="section-head">
+      <div><div class="tag-mono">AREA 04 / FLOW VISUALIZATION</div><h2>Seeing what's too small to see</h2></div>
+      <div class="idx">流場可視化</div>
+    </div>
+    <div class="intro-grid" style="padding:0; border-bottom:none">
+      <div>
+        <p>We develop and apply flow-visualization methods — confocal μPIV, OCT-μPIV, stereoscopic PIV — to resolve pulsatile, three-dimensional flow fields inside microchannels and living embryos. The lab's OCT-μPIV technique, developed at Carnegie Mellon, enables non-invasive depth-resolved flow measurement in tissue.</p>
+        <p>Visualization also serves our industrial collaborations — notably wafer-rinse hydrodynamics at the NCKU-TSMC Joint Developed Project, where understanding flow at the microscale directly translates into process yield.</p>
+      </div>
+      <div>
+        <div class="tag-mono">KEY PAPERS</div>
+        <ul style="list-style:none; padding:0; margin:12px 0 0; font-size:14px; line-height:1.8">
+          <li>— Chen et al., <i>Experiments in Fluids</i>, 2013 (OCT-μPIV)</li>
+          <li>— Chen et al., <i>Biorheology</i>, 2011</li>
+          <li>— Chen et al., <i>J. Fluids Eng.</i> (ASME), 2018</li>
+          <li>— Pekkan et al., <i>Experiments in Fluids</i>, 2016</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="tag-mono">§ COLLABORATIONS</div><h2>External partnerships</h2></div>
+    </div>
+    <div class="areas">
+      <div class="area"><div class="num">01</div><h3>NCKU–TSMC Joint Developed Project</h3><p>成大台積電聯合研發中心計畫 — microfluidic hydrodynamics for semiconductor processing.</p></div>
+      <div class="area"><div class="num">02</div><h3>Carnegie Mellon & Koç University</h3><p>Long-standing collaboration on embryonic hemodynamics and PIV methodology with Pekkan Lab.</p></div>
+      <div class="area"><div class="num">03</div><h3>International Review</h3><p>Funding proposal reviewer for NWO (Netherlands) and FNRS (Belgium), ACS reviewer certificate.</p></div>
+      <div class="area"><div class="num">04</div><h3>Science Diplomacy</h3><p>Former Director, Science & Technology Division, TECO Los Angeles (2020–2024).</p></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ PUBLICATIONS ============ -->
+<main class="page" id="publications">
+
+  <div class="slug">
+    <span>FILE/ 003 — PUBLICATIONS INDEX</span>
+    <span>SCI JOURNAL ARTICLES</span>
+    <span>2011 → 2024</span>
+  </div>
+
+  <h1 class="page-title">Publications</h1>
+  <p class="lede" style="max-width:820px; margin-top:20px">
+    A chronological record of peer-reviewed research from the Chen Lab and
+    collaborators. Filter by year to navigate; covers, editor's picks, and
+    featured papers are flagged inline.
+  </p>
+
+  <section class="metrics" style="margin-top:36px">
+    <div class="metric"><div class="n">50<sup>+</sup></div><div class="l">SCI articles</div></div>
+    <div class="metric"><div class="n">8</div><div class="l">Journal covers<br>& editor's picks</div></div>
+    <div class="metric"><div class="n">1</div><div class="l">Book chapter<br>Springer</div></div>
+    <div class="metric"><div class="n">6</div><div class="l">Patents<br>US & Taiwan</div></div>
+  </section>
+
+  <div class="filter-bar">
+    <button class="pill on" data-year="all">All <span class="ct">53</span></button>
+    <button class="pill" data-year="2024">2024 <span class="ct">2</span></button>
+    <button class="pill" data-year="2023">2023 <span class="ct">2</span></button>
+    <button class="pill" data-year="2022">2022 <span class="ct">3</span></button>
+    <button class="pill" data-year="2021">2021 <span class="ct">5</span></button>
+    <button class="pill" data-year="2020">2020 <span class="ct">4</span></button>
+    <button class="pill" data-year="2019">2019 <span class="ct">4</span></button>
+    <button class="pill" data-year="2018">2018 <span class="ct">5</span></button>
+    <button class="pill" data-year="2017">2017 <span class="ct">4</span></button>
+    <button class="pill" data-year="2016">2016 <span class="ct">6</span></button>
+    <button class="pill" data-year="2015">2015 <span class="ct">4</span></button>
+    <button class="pill" data-year="2014">2014 <span class="ct">5</span></button>
+    <button class="pill" data-year="2013">2013 <span class="ct">5</span></button>
+    <button class="pill" data-year="2011">2011 <span class="ct">4</span></button>
+  </div>
+
+  <ul class="pub-list">
+    <li class="yr-head" data-yr="2024"><span class="big">2024</span><span class="rule-line"></span><span class="tag-mono">2 articles</span></li>
+    <li class="pub" data-yr="2024"><div class="num">53</div><div class="yr">2024</div><div class="body"><h3 class="t">A stepwise control of multiple magnetic millirobots for flow manipulation applications <span class="highlight-tag cover-tag">Back Cover</span></h3><p class="a">Loganathan D., Hsieh C.-L., Ou C.-Y., Chen C.-Y.*</p><div class="v"><b>Advanced Intelligent Systems</b>, accepted</div></div><div class="meta-right">IF <span class="if">7.40</span><br>9 / 65 · 13.84%</div></li>
+    <li class="pub" data-yr="2024"><div class="num">52</div><div class="yr">2024</div><div class="body"><h3 class="t">An untethered magnetic microgripper for high-throughput micromanipulation <span class="highlight-tag cover-tag">Outside Back Cover</span></h3><p class="a">Loganathan D., Chaung Y., Lu Y.-H., Cheng C.-H., Chen C.-Y.*</p><div class="v"><b>Advanced Materials Technologies</b>, Vol. 9, pp. 2400292</div></div><div class="meta-right">IF <span class="if">6.80</span><br>82 / 344 · 23.8%</div></li>
+
+    <li class="yr-head" data-yr="2023"><span class="big">2023</span><span class="rule-line"></span><span class="tag-mono">2 articles</span></li>
+    <li class="pub" data-yr="2023"><div class="num">51</div><div class="yr">2023</div><div class="body"><h3 class="t">Synergetic benefits of microfluidics using artificial cilia and ZnO/SnFe₂O₄ for the degradation of pollutants</h3><p class="a">Vignesh S., Loganathan D., Chuang Y., Lo C.-F., Chen C.-Y., Chen C.-Y.*</p><div class="v"><b>Materials Chemistry and Physics</b></div></div><div class="meta-right">IF <span class="if">4.78</span><br>117 / 414 · 28.3%</div></li>
+    <li class="pub" data-yr="2023"><div class="num">50</div><div class="yr">2023</div><div class="body"><h3 class="t">Behaviour responses of zebrafish with sound stimuli in microfluidics <span class="highlight-tag cover-tag">Outside Back Cover</span></h3><p class="a">Loganathan D., Wu S.-H., Chen C.-Y.*</p><div class="v"><b>Lab on a Chip</b>, Vol. 23, pp. 106–114</div></div><div class="meta-right">IF <span class="if">7.52</span><br>6 / 79 · 7.59%</div></li>
+
+    <li class="yr-head" data-yr="2022"><span class="big">2022</span><span class="rule-line"></span><span class="tag-mono">3 articles</span></li>
+    <li class="pub" data-yr="2022"><div class="num">49</div><div class="yr">2022</div><div class="body"><h3 class="t">An on-demand microrobot with building block design for flow manipulation <span class="highlight-tag cover-tag">Inside Back Cover</span></h3><p class="a">Loganathan D., Hsieh C.-L., Shi B.-E., Lu Y.-H., Chen C.-Y.*</p><div class="v"><b>Advanced Materials Technologies</b>, Vol. 8, pp. 2207013</div></div><div class="meta-right">IF <span class="if">8.86</span><br>62 / 345 · 18%</div></li>
+    <li class="pub" data-yr="2022"><div class="num">48</div><div class="yr">2022</div><div class="body"><h3 class="t">Microfluidic applications of artificial cilia: recent progress, demonstration, and future perspectives <span class="highlight-tag">Featured · Editor's Choice</span></h3><p class="a">Vignesh S., Panigrahi B., Chen C.-Y.*</p><div class="v"><b>Micromachines</b></div></div><div class="meta-right">IF <span class="if">2.89</span><br>23 / 64 · 36%</div></li>
+    <li class="pub" data-yr="2022"><div class="num">47</div><div class="yr">2022</div><div class="body"><h3 class="t">An aquatic microrobot for microscale flow manipulation</h3><p class="a">Subendran S., Wang C.-W., Loganathan D., Lu Y.-H., Chen C.-Y.*</p><div class="v"><b>Scientific Reports</b></div></div><div class="meta-right">IF <span class="if">4.38</span><br>17 / 72 · 24%</div></li>
+
+    <li class="yr-head" data-yr="2021"><span class="big">2021</span><span class="rule-line"></span><span class="tag-mono">5 articles</span></li>
+    <li class="pub" data-yr="2021"><div class="num">46</div><div class="yr">2021</div><div class="body"><h3 class="t">Shape programmable artificial cilia for microfluidics</h3><p class="a">Panigrahi B., Vignesh S., Chen C.-Y.*</p><div class="v"><b>iScience</b></div></div><div class="meta-right">IF <span class="if">5.46</span><br>14 / 73 · 19%</div></li>
+    <li class="pub" data-yr="2021"><div class="num">45</div><div class="yr">2021</div><div class="body"><h3 class="t">The evaluation of zebrafish cardiovascular functions through microfluidics</h3><p class="a">Subendran S., Wang C.-W., Lu Y.-H., Chen C.-Y.*</p><div class="v"><b>Scientific Reports</b></div></div><div class="meta-right">IF <span class="if">3.99</span><br>17 / 71 · 24%</div></li>
+    <li class="pub" data-yr="2021"><div class="num">44</div><div class="yr">2021</div><div class="body"><h3 class="t">A non-invasive acoustic-trapping of zebrafish microfluidics</h3><p class="a">Karthick M., Chen C.-Y.*</p><div class="v"><b>Biomicrofluidics</b>, Vol. 15, pp. 0014109</div></div><div class="meta-right">IF <span class="if">2.73</span><br>11 / 34 · 32.4%</div></li>
+    <li class="pub" data-yr="2021"><div class="num">43</div><div class="yr">2021</div><div class="body"><h3 class="t">A smart microfluidic-based fish farm for zebrafish screening</h3><p class="a">Karthick M., Chen C.-Y.*</p><div class="v"><b>Microfluidics and Nanofluidics</b></div></div><div class="meta-right">IF <span class="if">2.86</span><br>19 / 37 · 38%</div></li>
+    <li class="pub" data-yr="2021"><div class="num">42</div><div class="yr">2021</div><div class="body"><h3 class="t">Comprehensive hydrodynamic investigation of zebrafish tail beats in a microfluidic device with shape memory alloy</h3><p class="a">Subendran S., Wang C.-W., Chen C.-Y.*</p><div class="v"><b>Micromachines</b></div></div><div class="meta-right">IF <span class="if">2.55</span><br>24 / 64 · 37%</div></li>
+
+    <li class="yr-head" data-yr="2020"><span class="big">2020</span><span class="rule-line"></span><span class="tag-mono">4 articles</span></li>
+    <li class="pub" data-yr="2020"><div class="num">41</div><div class="yr">2020</div><div class="body"><h3 class="t">Edible additive effects on zebrafish cardiovascular functionality with hydrodynamic assessment</h3><p class="a">Wang Y.-F., Chen I.-W., Subendran S., Wang C.-W., Fu T.-F.*, Chen C.-Y.*</p><div class="v"><b>Scientific Reports</b></div></div><div class="meta-right">IF <span class="if">3.99</span><br>17 / 71 · 24%</div></li>
+    <li class="pub" data-yr="2020"><div class="num">40</div><div class="yr">2020</div><div class="body"><h3 class="t">Hydrodynamic benefits of artificial cilia distribution towards photodegradation processes</h3><p class="a">Tang C.-H., Panigrahi B., Chen W.-T., Chen C.-Y.*, Chen C.-Y.*</p><div class="v"><b>Sensors and Actuators A: Physical</b>, Vol. 313, pp. 112184</div></div><div class="meta-right">IF <span class="if">2.74</span><br>19 / 61 · 31%</div></li>
+    <li class="pub" data-yr="2020"><div class="num">39</div><div class="yr">2020</div><div class="body"><h3 class="t">A multi-inlet microfluidic nozzle head with shape memory alloy-based switching for biomaterial printing with precise flow control</h3><p class="a">Mani K., Lin W.-C., Wang C.-F., Panigrahi B., Wu Y.-J., Wu C.-L., Chen C.-Y.*</p><div class="v"><b>Biochip Journal</b>, Vol. 14, pp. 340–348</div></div><div class="meta-right">IF <span class="if">1.95</span><br>50 / 84 · 59%</div></li>
+    <li class="pub" data-yr="2020"><div class="num">38</div><div class="yr">2020</div><div class="body"><h3 class="t">Extending absorption edge through the hybrid resonator-based absorber with wideband and near-perfect absorption in visible region</h3><p class="a">Lai Y.-C., Chen C.-Y., Hung Y.-T., Chen C.-Y.*</p><div class="v"><b>Materials</b>, Vol. 13, pp. 1470</div></div><div class="meta-right">IF <span class="if">3.53</span><br>102 / 293 · 34%</div></li>
+
+    <li class="yr-head" data-yr="2019"><span class="big">2019</span><span class="rule-line"></span><span class="tag-mono">4 articles</span></li>
+    <li class="pub" data-yr="2019"><div class="num">37</div><div class="yr">2019</div><div class="body"><h3 class="t">Microfluidic manipulation of larval zebrafish through combination of hydromechanical and optomotor regulations</h3><p class="a">Panigrahi B., Chen C.-Y.*</p><div class="v"><b>Micromachines</b></div></div><div class="meta-right">IF <span class="if">2.48</span><br>25 / 61 · 41%</div></li>
+    <li class="pub" data-yr="2019"><div class="num">36</div><div class="yr">2019</div><div class="body"><h3 class="t">Microfluidic retention of progressively motile zebrafish sperms <span class="highlight-tag cover-tag">Back Cover</span></h3><p class="a">Panigrahi B., Chen C.-Y.*</p><div class="v"><b>Lab on a Chip</b>, Vol. 19, pp. 4033–4042</div></div><div class="meta-right">IF <span class="if">6.58</span><br>5 / 84</div></li>
+    <li class="pub" data-yr="2019"><div class="num">35</div><div class="yr">2019</div><div class="body"><h3 class="t">Thrust and hydrodynamic efficiency of the bundled flagella</h3><p class="a">Danis U., Rasooli R., Chen C.-Y., Dur O., Sitti M., Pekkan K.*</p><div class="v"><b>Micromachines</b>, Vol. 10, pp. 449</div></div><div class="meta-right">IF <span class="if">2.24</span><br>22 / 61</div></li>
+    <li class="pub" data-yr="2019"><div class="num">34</div><div class="yr">2019</div><div class="body"><h3 class="t">On the improvement of visible-responsive photodegradation through artificial cilia</h3><p class="a">Lu C.-H., Tang C.-H., Ghayal N., Panigrahi B., Chen C.-Y.*, Chen C.-Y.*</p><div class="v"><b>Sensors and Actuators A: Physical</b>, Vol. 285, pp. 234–240</div></div><div class="meta-right">IF <span class="if">2.54</span><br>19 / 61</div></li>
+
+    <li class="yr-head" data-yr="2018"><span class="big">2018</span><span class="rule-line"></span><span class="tag-mono">5 articles</span></li>
+    <li class="pub" data-yr="2018"><div class="num">33</div><div class="yr">2018</div><div class="body"><h3 class="t">A shape memory alloy-based miniaturized actuator for catheter interventions</h3><p class="a">Lu Y.-H., Mani K., Hsu W.-T., Hajari S., Panigrahi B., Chen C.-Y.*</p><div class="v"><b>Cardiovascular Engineering and Technology</b>, Vol. 9, pp. 405–413</div></div><div class="meta-right">IF <span class="if">1.06</span><br>58 / 77</div></li>
+    <li class="pub" data-yr="2018"><div class="num">32</div><div class="yr">2018</div><div class="body"><h3 class="t">Computational fluid dynamics modeling of the human pulmonary arteries with experimental validation</h3><p class="a">Bordones A., Lerous M., Kheyfets V., Wu Y.-A., Chen C.-Y., Finol E.*</p><div class="v"><b>Annals of Biomedical Engineering</b>, Vol. 46, pp. 1309–1324</div></div><div class="meta-right">IF <span class="if">3.42</span><br>18 / 77</div></li>
+    <li class="pub" data-yr="2018"><div class="num">31</div><div class="yr">2018</div><div class="body"><h3 class="t">A noninvasive light-driven technique integrated for zebrafish larvae transportation <span class="highlight-tag">Editor's Pick</span></h3><p class="a">Mani K., Hsieh Y.-C., Panigrahi B., Chen C.-Y.*</p><div class="v"><b>Biomicrofluidics</b>, Vol. 12, pp. 021101</div></div><div class="meta-right">IF <span class="if">3.11</span><br>8 / 31 · 25.8%</div></li>
+    <li class="pub" data-yr="2018"><div class="num">30</div><div class="yr">2018</div><div class="body"><h3 class="t">Sperm activation through orbital and self-axis revolutions using artificial cilia embedded serpentine-microfluidic platform</h3><p class="a">Panigrahi B., Lu C.-H., Ghayal N., Chen C.-Y.*</p><div class="v"><b>Scientific Reports</b></div></div><div class="meta-right">IF <span class="if">4.85</span><br>10 / 64 · 15.6%</div></li>
+    <li class="pub" data-yr="2018"><div class="num">29</div><div class="yr">2018</div><div class="body"><h3 class="t">Hydrodynamic investigation of a wafer rinse process through numerical modeling and flow visualization methods</h3><p class="a">Chen C.-Y.*, Panigrahi B., Chong K.-S., Li W.-H., Liu Y.-L., Lu T.-Y.</p><div class="v"><b>Journal of Fluids Engineering — ASME</b>, Vol. 140, pp. 081106</div></div><div class="meta-right">IF <span class="if">1.65</span><br>64 / 130 · 49%</div></li>
+
+    <li class="yr-head" data-yr="2017"><span class="big">2017</span><span class="rule-line"></span><span class="tag-mono">4 articles</span></li>
+    <li class="pub" data-yr="2017"><div class="num">28</div><div class="yr">2017</div><div class="body"><h3 class="t">An integrated artificial cilia-based microfluidic device for micropumping and micromixing applications</h3><p class="a">Wu Y.-A., Panigrahi B., Lu Y.-H., Chen C.-Y.*</p><div class="v"><b>Micromachines</b>, Vol. 8, pp. 260</div></div><div class="meta-right">IF <span class="if">1.92</span><br>23 / 58 · 40%</div></li>
+    <li class="pub" data-yr="2017"><div class="num">27</div><div class="yr">2017</div><div class="body"><h3 class="t">Hydrodynamically efficient micropropulsion through a new artificial cilia beating concept</h3><p class="a">Wu Y.-A., Panigrahi B., Chen C.-Y.*</p><div class="v"><b>Microsystem Technologies</b>, Vol. 23, pp. 5893–5902</div></div><div class="meta-right">IF <span class="if">0.89</span><br>158 / 257</div></li>
+    <li class="pub" data-yr="2017"><div class="num">26</div><div class="yr">2017</div><div class="body"><h3 class="t">An artificial cilia-based micromixer towards the activation of zebrafish sperm</h3><p class="a">Huang P.-Y., Panigrahi B., Lu C.-H., Huang P.-F., Chen C.-Y.*</p><div class="v"><b>Sensors and Actuators B: Chemical</b>, Vol. 244, pp. 541–548</div></div><div class="meta-right">IF <span class="if">4.58</span><br>2 / 56 · 3.57%</div></li>
+    <li class="pub" data-yr="2017"><div class="num">25</div><div class="yr">2017</div><div class="body"><h3 class="t">Inherent formation of porous p-type Si nanowires using palladium-assisted chemical etching</h3><p class="a">Chen J.-M., Chen C.-Y., Wong C. P., Chen C.-Y.*</p><div class="v"><b>Applied Surface Science</b>, Vol. 392, pp. 498–502</div></div><div class="meta-right">IF <span class="if">2.98</span><br>1 / 18 · 5.56%</div></li>
+
+    <li class="yr-head" data-yr="2016"><span class="big">2016</span><span class="rule-line"></span><span class="tag-mono">6 articles</span></li>
+    <li class="pub" data-yr="2016"><div class="num">24</div><div class="yr">2016</div><div class="body"><h3 class="t">Manipulation of zebrafish's orientation using artificial cilia in a microchannel with actively adaptive wall design</h3><p class="a">Mani K., Chang Chien T.-C., Panigrahi B., Chen C.-Y.*</p><div class="v"><b>Scientific Reports</b></div></div><div class="meta-right">IF <span class="if">5.53</span><br>7 / 63 · 11.1%</div></li>
+    <li class="pub" data-yr="2016"><div class="num">23</div><div class="yr">2016</div><div class="body"><h3 class="t">Endoleak assessment using computational fluid dynamics and image processing methods in stented abdominal aortic aneurysm models</h3><p class="a">Lu Y.-H., Mani K., Panigrahi B., Hsu W.-T., Chen C.-Y.*</p><div class="v"><b>Computational and Mathematical Methods in Medicine</b> — Invited</div></div><div class="meta-right">IF <span class="if">0.96</span><br>42 / 56</div></li>
+    <li class="pub" data-yr="2016"><div class="num">22</div><div class="yr">2016</div><div class="body"><h3 class="t">Characterization of zebrafish larvae suction feeding flow using microPIV and optical coherence tomography</h3><p class="a">Pekkan K.*, Chang B., Usla F., Mani K., Chen C.-Y., Holzman R.</p><div class="v"><b>Experiments in Fluids</b>, Vol. 75, pp. 112</div></div><div class="meta-right">IF <span class="if">1.87</span><br>30 / 130</div></li>
+    <li class="pub" data-yr="2016"><div class="num">21</div><div class="yr">2016</div><div class="body"><h3 class="t">Axial orientation control of zebrafish larvae using artificial cilia</h3><p class="a">Chen C.-Y.*, Chang Chien T.-C., Mani K., Tsai H.-Y.</p><div class="v"><b>Microfluidics and Nanofluidics</b>, Vol. 20, pp. 1–9</div></div><div class="meta-right">IF <span class="if">2.76</span><br>7 / 56 · 12.5%</div></li>
+    <li class="pub" data-yr="2016"><div class="num">20</div><div class="yr">2016</div><div class="body"><h3 class="t">Hydrodynamic influences of artificial cilia beating behaviors on micromixing</h3><p class="a">Chen C.-Y.*, Hsu C.-C., Mani K., Panigrahi B.</p><div class="v"><b>Chemical Engineering and Processing: Process Intensification</b>, Vol. 99, pp. 33–40</div></div><div class="meta-right">IF <span class="if">2.34</span><br>48 / 135 · 35%</div></li>
+    <li class="pub" data-yr="2016"><div class="num">19</div><div class="yr">2016</div><div class="body"><h3 class="t">Efficient metamaterial-based plasmonic sensors for micromixing evaluation</h3><p class="a">Chen C.-Y.*, Chen C.-Y., Hsiao P.-H., Hsu C.-C., Mani K.</p><div class="v"><b>Journal of Physics D: Applied Physics</b>, Vol. 49, pp. 035501</div></div><div class="meta-right">IF <span class="if">2.71</span><br>27 / 144</div></li>
+
+    <li class="yr-head" data-yr="2015"><span class="big">2015</span><span class="rule-line"></span><span class="tag-mono">4 articles</span></li>
+    <li class="pub" data-yr="2015"><div class="num">18</div><div class="yr">2015</div><div class="body"><h3 class="t">Fabrication of PDMS passive micromixer by low-wax casting</h3><p class="a">Chung C.*, Chen Y.-J., Chen P.-C., Chen C.-Y.</p><div class="v"><b>International Journal of Precision Engineering and Manufacturing</b>, Vol. 16, pp. 2033–2039</div></div><div class="meta-right">IF <span class="if">1.37</span><br>33 / 128 · 26%</div></li>
+    <li class="pub" data-yr="2015"><div class="num">17</div><div class="yr">2015</div><div class="body"><h3 class="t">Microscale flow propulsion through bioinspired and magnetically actuated artificial cilia</h3><p class="a">Chen C.-Y.*, Cheng L.-Y., Hsu C.-C., Mani K.</p><div class="v"><b>Biomicrofluidics</b>, Vol. 9, pp. 034105</div></div><div class="meta-right">IF <span class="if">3.46</span><br>3 / 31 · 9.67%</div></li>
+    <li class="pub" data-yr="2015"><div class="num">16</div><div class="yr">2015</div><div class="body"><h3 class="t">Efficient micromixing through artificial cilia actuation with fish-schooling configuration <span class="highlight-tag cover-tag">Journal Cover</span></h3><p class="a">Chen C.-Y.*, Lin C.-Y., Hu Y.-T., Cheng L.-Y., Hsu C.-C.</p><div class="v"><b>Chemical Engineering Journal</b>, Vol. 259, pp. 391–396</div></div><div class="meta-right">IF <span class="if">4.18</span><br>8 / 133 · 6.02%</div></li>
+    <li class="pub" data-yr="2015"><div class="num">15</div><div class="yr">2015</div><div class="body"><h3 class="t">Experimental and computational investigation of the patient-specific abdominal aortic aneurysm pressure field</h3><p class="a">Antón R.*, Chen C.-Y., Hung M.-Y., Finol E. A., Pekkan K.</p><div class="v"><b>Computer Methods in Biomechanics and Biomedical Engineering</b>, Vol. 18, pp. 981–992</div></div><div class="meta-right">IF <span class="if">1.64</span><br>48 / 100 · 48%</div></li>
+
+    <li class="yr-head" data-yr="2014"><span class="big">2014</span><span class="rule-line"></span><span class="tag-mono">5 articles</span></li>
+    <li class="pub" data-yr="2014"><div class="num">14</div><div class="yr">2014</div><div class="body"><h3 class="t">Real-time remote control of artificial cilia actuation using fingertip drawing for efficient micromixing</h3><p class="a">Chen C.-Y.*, Yao C.-Y., Lin C.-Y., Wang C.-W.</p><div class="v"><b>JALA — Journal of Laboratory Automation</b>, Vol. 19, pp. 492–497</div></div><div class="meta-right">IF <span class="if">1.50</span><br>45 / 76</div></li>
+    <li class="pub" data-yr="2014"><div class="num">13</div><div class="yr">2014</div><div class="body"><h3 class="t">Inducing 3D vortical flow patterns with 2D asymmetric actuation of artificial cilia for high-performance active micromixing</h3><p class="a">Chen C.-Y.*, Lin C.-Y., Hu Y.-T.</p><div class="v"><b>Experiments in Fluids</b>, Vol. 55, pp. 1765</div></div><div class="meta-right">IF <span class="if">2.22</span><br>24 / 126 · 19%</div></li>
+    <li class="pub" data-yr="2014"><div class="num">12</div><div class="yr">2014</div><div class="body"><h3 class="t">Microfluidics expands the zebrafish potentials in pharmaceutically relevant screening</h3><p class="a">Chen C.-Y., Cheng C.-M.*</p><div class="v"><b>Advanced Healthcare Materials</b>, Vol. 3, pp. 940–945</div></div><div class="meta-right">IF <span class="if">4.88</span><br>5 / 32 · 15.6%</div></li>
+    <li class="pub" data-yr="2014"><div class="num">11</div><div class="yr">2014</div><div class="body"><h3 class="t">Effects of intraluminal thrombus on patient-specific abdominal aortic aneurysm hemodynamics via stereoscopic PIV and CFD modeling</h3><p class="a">Chen C.-Y., Antón R., Hung M.-Y., Menon P. G., Patrick M. J., Finol E. A., Pekkan K.*</p><div class="v"><b>Journal of Biomechanical Engineering — ASME</b>, Vol. 136, pp. 031001</div></div><div class="meta-right">IF <span class="if">2.05</span><br>43 / 79</div></li>
+    <li class="pub" data-yr="2014"><div class="num">10</div><div class="yr">2014</div><div class="body"><h3 class="t">Hemodynamic effects of endoleak formation in abdominal aortic aneurysm patients with stent-graft implants <span class="highlight-tag">Excellent Annual Paper</span></h3><p class="a">Lu Y.-H., Chen C.-Y.*, Menon P., Liu K.-T., Lin H.-H.</p><div class="v"><b>Journal of Medical and Biological Engineering</b>, Vol. 34, pp. 554–558</div></div><div class="meta-right">IF <span class="if">0.90</span><br>60 / 79</div></li>
+
+    <li class="yr-head" data-yr="2013"><span class="big">2013</span><span class="rule-line"></span><span class="tag-mono">5 articles</span></li>
+    <li class="pub" data-yr="2013"><div class="num">9</div><div class="yr">2013</div><div class="body"><h3 class="t">Influences of textured substrates on heart rate of developing zebrafish embryos</h3><p class="a">Chen C.-Y.*, Chen C.-Y.</p><div class="v"><b>Nanotechnology</b>, Vol. 24, pp. 265101</div></div><div class="meta-right">IF <span class="if">3.84</span><br>18 / 128 · 14.1%</div></li>
+    <li class="pub" data-yr="2013"><div class="num">8</div><div class="yr">2013</div><div class="body"><h3 class="t">Magnetically actuated artificial cilia for optimum mixing performance in microfluidics <span class="highlight-tag">First PI publication</span></h3><p class="a">Chen C.-Y.*, Chen C.-Y., Lin C.-Y., Hu Y.-T.</p><div class="v"><b>Lab on a Chip</b>, Vol. 13, pp. 2834–2839</div></div><div class="meta-right">IF <span class="if">6.14</span><br>6 / 75 · 8%</div></li>
+    <li class="pub" data-yr="2013"><div class="num">7</div><div class="yr">2013</div><div class="body"><h3 class="t">High-speed three-dimensional characterization of fluid flows induced by micro-objects in deep microchannels</h3><p class="a">Chen C.-Y., Pekkan K.*</p><div class="v"><b>BioChip Journal</b>, Vol. 7, pp. 95–103</div></div><div class="meta-right">IF <span class="if">0.68</span><br>66 / 75</div></li>
+    <li class="pub" data-yr="2013"><div class="num">6</div><div class="yr">2013</div><div class="body"><h3 class="t">Time-resolved OCT-μPIV: A new microscopic PIV technique for noninvasive depth-resolved pulsatile flow profile acquisition</h3><p class="a">Chen C.-Y., Menon P., Kowalski W., Pekkan K.*</p><div class="v"><b>Experiments in Fluids</b>, Vol. 54, pp. 1426</div></div><div class="meta-right">IF <span class="if">2.01</span><br>27 / 125 · 21.6%</div></li>
+    <li class="pub" data-yr="2013"><div class="num">5</div><div class="yr">2013</div><div class="body"><h3 class="t">Characterization of neonatal aortic cannulae jet flow regimes for improved cardiopulmonary bypass</h3><p class="a">Menon P., Teslovich N., Chen C.-Y., Undar A., Pekkan K.*</p><div class="v"><b>Journal of Biomechanics</b>, Vol. 46, pp. 362–372</div></div><div class="meta-right">IF <span class="if">3.03</span><br>18 / 79 · 22.8%</div></li>
+
+    <li class="yr-head" data-yr="2011"><span class="big">2011</span><span class="rule-line"></span><span class="tag-mono">4 articles</span></li>
+    <li class="pub" data-yr="2011"><div class="num">4</div><div class="yr">2011</div><div class="body"><h3 class="t">Analysis of early embryonic great-vessel microcirculation in zebrafish using high-speed confocal μPIV</h3><p class="a">Chen C.-Y., Patrick M. J., Corti P., Kowalski W., Roman B. L., Pekkan K.*</p><div class="v"><b>Biorheology</b>, Vol. 48, pp. 305–321</div></div><div class="meta-right">IF <span class="if">1.91</span><br>52 / 79</div></li>
+    <li class="pub" data-yr="2011"><div class="num">3</div><div class="yr">2011</div><div class="body"><h3 class="t">Hemodynamics of the hepatic venous three-vessel confluences using particle image velocimetry</h3><p class="a">Lara M., Chen C.-Y., Mannor P., Dur O., Pekkan K.*</p><div class="v"><b>Annals of Biomedical Engineering</b>, Vol. 39, pp. 2398–2416</div></div><div class="meta-right">IF <span class="if">2.55</span><br>21 / 79 · 26.6%</div></li>
+    <li class="pub" data-yr="2011"><div class="num">2</div><div class="yr">2011</div><div class="body"><h3 class="t">Interaction between alk1 and blood flow in development of arteriovenous malformations</h3><p class="a">Corti P., Young S., Chen C.-Y., Patrick M. J., Rochon E., Pekkan K.*, Roman B. L.</p><div class="v"><b>Development</b>, Vol. 138, pp. 1573–1582</div></div><div class="meta-right">IF <span class="if">6.89</span><br>5 / 41 · 12.2%</div></li>
+    <li class="pub" data-yr="2011"><div class="num">1</div><div class="yr">2011</div><div class="body"><h3 class="t">Cellular-level near-wall unsteadiness of high-hematocrit erythrocyte flow using confocal microPIV</h3><p class="a">Patrick M. J., Chen C.-Y., Frakes D. H., Dur O., Pekkan K.*</p><div class="v"><b>Experiments in Fluids</b>, Vol. 50, pp. 887–904</div></div><div class="meta-right">IF <span class="if">2.01</span><br>27 / 125 · 21.6%</div></li>
+  </ul>
+
+  <section class="section" style="border-bottom:none; margin-top:40px">
+    <div class="section-head">
+      <div><div class="tag-mono">§ BOOK CHAPTER</div><h2>Springer — Methods in Molecular Biology</h2></div>
+    </div>
+    <div class="pub" style="border-bottom:none">
+      <div class="num">BC</div><div class="yr">2015</div>
+      <div class="body">
+        <h3 class="t">Hemodynamic Flow Visualization of Early Embryonic Great Vessels using μPIV</h3>
+        <p class="a">Goktas S., Chen C.-Y., Kowalski W. J., Pekkan K.</p>
+        <div class="v">In <b>Tissue Morphogenesis</b> (Ed. Nelson, C. M.), Methods in Molecular Biology, Springer</div>
+      </div>
+      <div class="meta-right">Springer</div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ TEACHING ============ -->
+<main class="page" id="teaching">
+
+  <div class="slug">
+    <span>FILE/ 004 — MENTORSHIP</span>
+    <span>PhD · MS · UNDERGRAD</span>
+  </div>
+
+  <h1 class="page-title">Teaching<br><em style="color:var(--accent); font-style:italic">& Students</em></h1>
+  <p class="lede" style="max-width:820px; margin-top:20px">
+    The lab has trained five doctoral researchers and over fifty master's students since 2012. Alumni have moved into academia, TSMC, UMC, Delta, the automotive and petrochemical industries, and graduate programs abroad.
+  </p>
+
+  <section class="metrics" style="margin-top:40px">
+    <div class="metric"><div class="n">5</div><div class="l">PhD students<br>advised</div></div>
+    <div class="metric"><div class="n">55<sup>+</sup></div><div class="l">MS students<br>graduated</div></div>
+    <div class="metric"><div class="n">17</div><div class="l">Student awards<br>as advisor</div></div>
+    <div class="metric"><div class="n">12</div><div class="l">Years of<br>mentorship</div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="tag-mono">§ 01 — DOCTORAL STUDENTS</div><h2>Ph.D. researchers.</h2></div>
+      <div class="idx">CLASS OF 2019 → 2027</div>
+    </div>
+    <div class="phd-grid">
+      <div class="phd"><div class="cy">CLASS OF 2019</div><div class="nm">Bivas Panigrahi</div><div class="dest">→ Assistant Professor, National Chin-Yi University of Technology (2020–)</div></div>
+      <div class="phd"><div class="cy">CLASS OF 2020</div><div class="nm">Karthick Mani</div><div class="dest">→ Postdoc & industry</div></div>
+      <div class="phd"><div class="cy">CLASS OF 2024</div><div class="nm">Sahadevan Vignesh</div><div class="dest">→ CTCI Research Scholar (2022)</div></div>
+      <div class="phd"><div class="cy">CLASS OF 2025</div><div class="nm">Dineshkumar Loganathan</div><div class="dest">→ Lead author on 4 recent Adv. Mater. Tech. & Lab Chip papers</div></div>
+      <div class="phd"><div class="cy">CLASS OF 2027</div><div class="nm">Prashant Kishor Sharma</div><div class="dest">→ Current PhD researcher</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="tag-mono">§ 02 — MASTER'S COHORTS</div><h2>M.S. alumni by class year.</h2></div>
+      <div class="idx">2014 → 2024</div>
+    </div>
+    <div class="cohort"><div class="cy">Class of 2014</div><div class="list">林承毅 (TSMC) · 胡雅婷 (AUO) · 林星宏 (Delta Electronics) · 劉冠廷 (INER → MS, Univ. of Florida)</div></div>
+    <div class="cohort"><div class="cy">Class of 2015</div><div class="list">程林瀅 (TSMC & Foxconn R&D)</div></div>
+    <div class="cohort"><div class="cy">Class of 2016</div><div class="list">蔡翔宇 (TSMC) · 張簡琮淳 (UMC R&D) · 徐俊傑 (China Motor → CPC Corp.) · 劉彥亨</div></div>
+    <div class="cohort"><div class="cy">Class of 2017</div><div class="list">吳祐安 · 黃品宜 · 許玟棠 (Wistron)</div></div>
+    <div class="cohort"><div class="cy">Class of 2018</div><div class="list">謝侑哲 (TSMC) · 呂宗益 (TSMC) · Saurabh Hajari · Neha Ghayal · 呂昌鴻 (TSMC)</div></div>
+    <div class="cohort"><div class="cy">Class of 2019</div><div class="list">郭泓毅 · 吳允開 · 吳建晉 · 杜秉修 · 李育元</div></div>
+    <div class="cohort"><div class="cy">Class of 2020</div><div class="list">陳逸維 (TSMC) · 蔡肯佑 (TSMC R&D) · 陳韋廷 (TSMC R&D)</div></div>
+    <div class="cohort"><div class="cy">Class of 2021</div><div class="list">王俊方 · 王義傑 (TSMC R&D) · 康君瑋 (TSMC R&D) · 劉安倫 (TSMC) · SatishKumar Subendran</div></div>
+    <div class="cohort"><div class="cy">Class of 2022</div><div class="list">陳少宇 · 吳書衡 · 吳秉樺 · 施柏爾</div></div>
+    <div class="cohort"><div class="cy">Class of 2023</div><div class="list">莊穎 · 高林子恩 · 劉邦偉 · 楊凱翔 · 謝佳玲</div></div>
+    <div class="cohort"><div class="cy">Class of 2024</div><div class="list">歐辰億 · 許朝尉 · 陳銘龍 · 鄭家妡 · 鄭至玹</div></div>
+  </section>
+
+  <section class="section" style="border-bottom:none">
+    <div class="section-head">
+      <div><div class="tag-mono">§ 03 — STUDENT RECOGNITION</div><h2>Awards as advisor.</h2></div>
+    </div>
+    <div class="award"><div class="yr">'22</div><div><h3 class="tt">CTCI Research Scholar for International Graduate Students</h3><div class="or">Advised: Vignesh Sahadevan · 財團法人中技社境外生研究獎學金</div></div></div>
+    <div class="award"><div class="yr">'21</div><div><h3 class="tt">Best PhD Dissertation Award, Lam Research</h3><div class="or">Advised: Bivas Panigrahi · 柯林博士論文獎</div></div></div>
+    <div class="award"><div class="yr">'20</div><div><h3 class="tt">Excellent Oral Paper Award, 23rd Nano Engineering & Microsystem Technology Conf.</h3><div class="or">Advised: SatishKumar Subendran & 康君瑋</div></div></div>
+    <div class="award"><div class="yr">'19</div><div><h3 class="tt">Best Master Thesis Award · Honorary Poster · CIE Outstanding</h3><div class="or">Advised: 呂昌鴻 · Bivas Panigrahi · 吳允開</div></div></div>
+    <div class="award"><div class="yr">'19</div><div><h3 class="tt">IEEE NEMS 2019 — Best Conference & Best Student Paper Nominations</h3><div class="or">Advised: Bivas Panigrahi · Thailand</div></div></div>
+    <div class="award"><div class="yr">'17</div><div><h3 class="tt">CTCI Foundation Scholarship — Lift Grant</h3><div class="or">Advised: Bivas Panigrahi</div></div></div>
+    <div class="award"><div class="yr">'16</div><div><h3 class="tt">Outstanding Award, National Microfabrication Competition</h3><div class="or">Advised: 蔡翔宇 & 徐俊傑</div></div></div>
+    <div class="award"><div class="yr">'15</div><div><h3 class="tt">Distinct Award · Best Podium Oral · TSMC-NCKU Outstanding · CIE Second Prize</h3><div class="or">Advised: 蔡翔宇 · 吳祐安 · 徐俊傑 · 陳兆陽 · 楊育璿</div></div></div>
+    <div class="award"><div class="yr">'15</div><div><h3 class="tt">IEEE NEMS 2015 — Best Conference & Best Student Paper Nominations</h3><div class="or">Advised: 張簡琮淳 · Karthick Mani · only 10 finalists</div></div></div>
+    <div class="award"><div class="yr">'13</div><div><h3 class="tt">20th National CFD Conf. — Student Finalist & Gallery of Fluid Motion</h3><div class="or">Advised: 胡雅婷 & 林承毅</div></div></div>
+    <div class="award"><div class="yr">'12</div><div><h3 class="tt">Best Poster Award, MRS-T Annual Meeting</h3><div class="or">Advised: 胡雅婷 & 林承毅 · 1 awarded out of 48 entries</div></div></div>
+  </section>
+
+</main>
+
+<!-- ============ CV ============ -->
+<main class="page" id="cv">
+
+  <div class="slug">
+    <span>FILE/ 005 — CURRICULUM VITAE</span>
+    <span>EDUCATION · CAREER · SERVICE</span>
+  </div>
+
+  <h1 class="page-title">CV <em style="color:var(--accent)">/</em> Awards</h1>
+  <p class="lede" style="max-width:820px; margin-top:20px">
+    Academic record, professional trajectory, and honors — from Carnegie Mellon to TECO Los Angeles, and back to the Mechanical Engineering department at National Cheng Kung University.
+  </p>
+
+  <section class="section">
+    <div class="section-head"><div><div class="tag-mono">§ 01 — EDUCATION</div><h2>Degrees.</h2></div></div>
+    <div class="xp"><div class="when">2012 · Ph.D.</div><div><h3 class="what">Ph.D., Biomedical Engineering</h3><div class="where">Carnegie Mellon University, United States</div></div></div>
+    <div class="xp"><div class="when">2005 · M.S.</div><div><h3 class="what">M.S., Mechanical Engineering</h3><div class="where">National Tsing Hua University, Taiwan</div></div></div>
+    <div class="xp"><div class="when">2003 · B.S.</div><div><h3 class="what">B.S., Mechanical Engineering</h3><div class="where">National Chung Cheng University, Taiwan</div></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="tag-mono">§ 02 — PROFESSIONAL EXPERIENCE</div><h2>Career trajectory.</h2></div></div>
+    <div class="xp"><div class="when">Aug 2019 → Present</div><div><h3 class="what">Full Professor</h3><div class="where">Department of Mechanical Engineering, National Cheng Kung University, Taiwan</div></div></div>
+    <div class="xp"><div class="when">Feb 2016 → Jul 2019</div><div><h3 class="what">Associate Professor</h3><div class="where">Department of Mechanical Engineering, National Cheng Kung University, Taiwan</div></div></div>
+    <div class="xp"><div class="when">Feb 2014 → Jan 2016</div><div><h3 class="what">Assistant Professor</h3><div class="where">Department of Mechanical Engineering, National Cheng Kung University, Taiwan</div></div></div>
+    <div class="xp"><div class="when">Aug 2012 → Jan 2014</div><div><h3 class="what">Assistant Professor</h3><div class="where">Department of Mechanical Engineering, National Taiwan University of Science and Technology, Taiwan</div></div></div>
+    <div class="xp"><div class="when">Mar 2007 → Nov 2008</div><div><h3 class="what">Senior Lithography Process Engineer</h3><div class="where">UMC, Hsinchu Science Park, Taiwan</div></div></div>
+    <div class="xp"><div class="when">Oct 2005 → Jan 2007</div><div><h3 class="what">Corporal of Military Police</h3><div class="where">Army of R.O.C., Taiwan</div></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="tag-mono">§ 03 — PROFESSIONAL SERVICE</div><h2>Leadership & appointments.</h2></div></div>
+    <div class="xp"><div class="when">Feb 2022</div><div><h3 class="what">Fellow, The Royal Society of Chemistry (FRSC)</h3><div class="where">Recognition for sustained contributions to the chemical sciences</div></div></div>
+    <div class="xp"><div class="when">Jul 2020 → Jun 2024</div><div><h3 class="what">Director, Science & Technology Division</h3><div class="where">Taipei Economic and Cultural Office in Los Angeles · 駐洛杉磯台北經濟文化辦事處科技組組長</div></div></div>
+    <div class="xp"><div class="when">Aug 2022 → Dec 2022</div><div><h3 class="what">Director, Science & Technology Division (concurrent)</h3><div class="where">Taipei Economic and Cultural Office in Houston</div></div></div>
+    <div class="xp"><div class="when">Aug 2018 → Jun 2020</div><div><h3 class="what">Associate Vice President for International Affairs</h3><div class="where">National Cheng Kung University · 副國際長</div></div></div>
+    <div class="xp"><div class="when">Sep 2017 → Jun 2020</div><div><h3 class="what">Director, International Relations Division</h3><div class="where">Office of International Affairs, National Cheng Kung University</div></div></div>
+    <div class="xp"><div class="when">2019</div><div><h3 class="what">Invited Talk — IEEE NEMS</h3><div class="where">International Conference on Nano/Micro Engineered and Molecular Systems</div></div></div>
+    <div class="xp"><div class="when">2018</div><div><h3 class="what">IEEE MEMS Executive Technical Program Committee</h3><div class="where">Abstract Review · Section Chair · Award Selection</div></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="tag-mono">§ 04 — EDITORIAL & REVIEW</div><h2>Editorial work.</h2></div></div>
+    <div class="areas">
+      <div class="area"><div class="num">2023</div><h3>International Reviewer</h3><p>NWO — Dutch Research Council, Open Competition Domain Science-M (Netherlands)</p></div>
+      <div class="area"><div class="num">2022–23</div><h3>International Reviewer</h3><p>FNRS — The National Fund for Scientific Research (Belgium)</p></div>
+      <div class="area"><div class="num">2023</div><h3>Reviewer Certificate</h3><p>American Chemical Society (ACS)</p></div>
+      <div class="area"><div class="num">2021–22</div><h3>Invited Book Editor</h3><p>AIP Publishing — American Institute of Physics</p></div>
+      <div class="area"><div class="num">2021</div><h3>Invited Guest Editor</h3><p>JOVE Methods Collection</p></div>
+      <div class="area"><div class="num">2020–22</div><h3>Topical Advisory Panel</h3><p>Biosensors (IF 5.52)</p></div>
+      <div class="area"><div class="num">2020–21</div><h3>Reviewer Board</h3><p>Micromachines (IF 2.52)</p></div>
+      <div class="area"><div class="num">40+</div><h3>Journal Reviewer</h3><p>ACS Nano Letters, Lab on a Chip, Scientific Reports, Applied Energy, Biosensors, and 40+ more SCI journals.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="tag-mono">§ 05 — PATENTS</div><h2>Granted & pending.</h2></div></div>
+    <div class="patent"><div class="p-num">US / 01</div><div><h3 class="p-tt">Micro-channel imaging system for living organism</h3><p class="p-meta">Chen · Mani · Huang · Lu · US 10,786,341 B2 · Granted 2020</p></div></div>
+    <div class="patent"><div class="p-num">TW / 02</div><div><h3 class="p-tt">用於活體動物的影像系統 (Imaging system for live animals)</h3><p class="p-meta">陳嘉元 · 馬念恆 · 黃品宜 · 呂宗益 · TW I670037 · 2019/09/01 – 2037/10/24</p></div></div>
+    <div class="patent"><div class="p-num">TW / 03</div><div><h3 class="p-tt">透光模型的血管製作方法 (Light-transmitting blood vessel model fabrication)</h3><p class="p-meta">陳嘉元 · 馬念恆 · 杜秉修 · TW I709115 · 2020/11/01 – 2039/09/26</p></div></div>
+    <div class="patent"><div class="p-num">US / 04</div><div><h3 class="p-tt">Method of fabricating light-transmitting blood vessel mode</h3><p class="p-meta">Chen · Mani · Du · US Patent · Pending (filed 2020)</p></div></div>
+    <div class="patent"><div class="p-num">TW / 05</div><div><h3 class="p-tt">微型機器人及製備方法 (Microrobot and manufacturing method)</h3><p class="p-meta">陳嘉元 · 王俊方 · TW I829095 · 2024/01/11 – 2042/02/14</p></div></div>
+    <div class="patent"><div class="p-num">US / 06</div><div><h3 class="p-tt">Microrobot and manufacturing method thereof</h3><p class="p-meta">Chen · Wang · US Patent · Pending (filed 2022)</p></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="tag-mono">§ 06 — AWARDS & RECOGNITION</div><h2>As Principal Investigator.</h2></div>
+      <div class="idx">21 AWARDS · 2012 → 2022</div>
+    </div>
+    <div class="award"><div class="yr">'22</div><div><h3 class="tt">Fellow, The Royal Society of Chemistry (FRSC)</h3><div class="or">International recognition for sustained contributions to the chemical sciences</div></div></div>
+    <div class="award"><div class="yr">'20</div><div><h3 class="tt">Outstanding Engineering Professor</h3><div class="or">Chinese Society of Mechanical Engineers, Kaohsiung Branch · 優秀機械工程教授獎</div></div></div>
+    <div class="award"><div class="yr">'20</div><div><h3 class="tt">Excellence in Research</h3><div class="or">Department of Mechanical Engineering, NCKU · 機械系研究績優</div></div></div>
+    <div class="award"><div class="yr">'19</div><div><h3 class="tt">Kuo-Ting Li Research Award</h3><div class="or">National Cheng Kung University · 李國鼎研究獎</div></div></div>
+    <div class="award"><div class="yr">'19</div><div><h3 class="tt">Excellence in Research & Excellence in Tutoring</h3><div class="or">Department of Mechanical Engineering, NCKU</div></div></div>
+    <div class="award"><div class="yr">'18</div><div><h3 class="tt">Ta-You Wu Memorial Award</h3><div class="or">Ministry of Science and Technology, Taiwan · 吳大猷先生紀念獎</div></div></div>
+    <div class="award"><div class="yr">'18</div><div><h3 class="tt">Excellence in Research</h3><div class="or">Department of Mechanical Engineering, NCKU</div></div></div>
+    <div class="award"><div class="yr">'17</div><div><h3 class="tt">Excellence in Teaching & Excellence in Research</h3><div class="or">Department of Mechanical Engineering, NCKU</div></div></div>
+    <div class="award"><div class="yr">'16</div><div><h3 class="tt">Outstanding Young Engineering Professor Award</h3><div class="or">Chinese Society of Mechanical Engineers, Taiwan · 優秀青年工程教授獎</div></div></div>
+    <div class="award"><div class="yr">'16</div><div><h3 class="tt">Outstanding Young Scholar Award</h3><div class="or">Ministry of Science and Technology, Taiwan · 3-year grant</div></div></div>
+    <div class="award"><div class="yr">'16</div><div><h3 class="tt">Rising Star Award</h3><div class="or">College of Engineering, NCKU · 工學院明日之星</div></div></div>
+    <div class="award"><div class="yr">'15</div><div><h3 class="tt">Excellence in Research · High Impact Journal Publication Award</h3><div class="or">Department of Mechanical Engineering, NCKU</div></div></div>
+    <div class="award"><div class="yr">'14</div><div><h3 class="tt">JMBE Excellent Annual Paper · Young Scholar (TCUS) · High Ranking Paper (NCKU)</h3><div class="or">Multiple recognitions for published work in high-ranking journals</div></div></div>
+    <div class="award"><div class="yr">'13</div><div><h3 class="tt">Outstanding Young Scholar Award · NSC</h3><div class="or">National Science Council, Taiwan · 3-year grant · 優秀年輕學者獎勵</div></div></div>
+    <div class="award"><div class="yr">'13</div><div><h3 class="tt">Excellence in Research · Excellence in Teaching · High Ranking Paper (×2)</h3><div class="or">National Taiwan University of Science and Technology</div></div></div>
+    <div class="award"><div class="yr">'12</div><div><h3 class="tt">Newly-Appointed NSC Research Fellow Award</h3><div class="or">National Science Council, Taiwan · NSC 101-2811-E-011-601</div></div></div>
+  </section>
+
+  <section class="section" style="border-bottom:none">
+    <div class="section-head"><div><div class="tag-mono">§ 07 — CONTACT</div><h2>Get in touch.</h2></div></div>
+    <div class="hero-card" style="max-width:640px">
+      <div class="kv"><div class="k">Office</div><div>Dept. of Mechanical Engineering, NCKU<br>No.1, University Road, Tainan 701, Taiwan</div></div>
+      <div class="kv"><div class="k">Email</div><div class="mono">chiayuac@mail.ncku.edu.tw</div></div>
+      <div class="kv"><div class="k">Phone</div><div class="mono">+886-6-2757575 ext. 62169</div></div>
+      <div class="kv"><div class="k">For</div><div>Research collaboration · Visiting scholar inquiries · Graduate applications · Press & invited talks</div></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>© 2026 — CHIA-YUAN CHEN LAB · NCKU</div>
+    <div>TAINAN 701 · TAIWAN</div>
+    <div class="mono">chiayuac@mail.ncku.edu.tw</div>
+  </div>
+</footer>
+
+<button class="to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Scroll to top">↑</button>
+
+<script>
+  // page nav
+  function go(id){
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+    const btn = document.querySelector('.nav button[data-nav="'+id+'"]');
+    if(btn) btn.classList.add('active');
+    window.scrollTo({top:0, behavior:'instant'});
+    // re-run reveal observer for newly-displayed content
+    setTimeout(initReveal, 50);
+  }
+
+  // publications filter
+  const pills = document.querySelectorAll('.pill');
+  const items = document.querySelectorAll('.pub, .yr-head');
+  pills.forEach(p => {
+    p.addEventListener('click', () => {
+      pills.forEach(x => x.classList.remove('on'));
+      p.classList.add('on');
+      const y = p.dataset.year;
+      items.forEach(it => {
+        it.style.display = (y === 'all' || it.dataset.yr === y) ? '' : 'none';
+      });
+    });
+  });
+
+  // scroll-based reveal
+  function initReveal(){
+    const els = document.querySelectorAll('.reveal:not(.in)');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting){
+          e.target.classList.add('in');
+          obs.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.08});
+    els.forEach(el => obs.observe(el));
+  }
+  initReveal();
+
+  // to-top button
+  const tt = document.querySelector('.to-top');
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 500) tt.classList.add('show');
+    else tt.classList.remove('show');
+  });
+</script>
+
+</body>
+</html>
