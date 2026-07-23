@@ -454,6 +454,28 @@
   }
   .phd .dest{font-size:13px; color:var(--muted); font-style:italic}
 
+  .people-filter{
+    display:flex; flex-wrap:wrap; gap:8px;
+    margin:34px 0 8px;
+  }
+  .people-pill{
+    border:1px solid var(--ink);
+    background:transparent;
+    color:var(--ink);
+    padding:8px 12px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:.12em; text-transform:uppercase;
+    cursor:pointer;
+  }
+  .people-pill:hover,.people-pill.on{background:var(--ink); color:var(--paper)}
+  .people-group[hidden]{display:none}
+  .roster-note{
+    border:1px dashed var(--rule);
+    padding:28px;
+    color:var(--muted);
+    font-style:italic;
+  }
+
   .award{
     display:grid; grid-template-columns: 80px 1fr;
     gap:24px;
@@ -633,7 +655,7 @@
       <button onclick="go('home')" data-nav="home" class="active">Home</button>
       <button onclick="go('research')" data-nav="research">Research</button>
       <button onclick="go('publications')" data-nav="publications">Publications</button>
-      <button onclick="go('teaching')" data-nav="teaching">Teaching</button>
+      <button onclick="go('people')" data-nav="people">People</button>
       <button onclick="go('cv')" data-nav="cv">CV & Awards</button>
     </nav>
   </div>
@@ -1025,7 +1047,7 @@
   <section class="section" style="border-bottom:none">
     <div class="section-head">
       <div><div class="tag-mono">AREA 04 / FLOW VISUALIZATION</div><h2>Seeing what's too small to see</h2></div>
-      
+     
     </div>
     <div class="intro-grid" style="padding:0; border-bottom:none">
       <div>
@@ -1216,73 +1238,67 @@
 
 </main>
 
-<!-- ============ TEACHING ============ -->
-<main class="page" id="teaching">
+<!-- ============ PEOPLE ============ -->
+<main class="page" id="people">
 
   <div class="slug">
-    <span>FILE/ 004 — MENTORSHIP</span>
-    <span>PhD · MS · UNDERGRAD</span>
+    <span>FILE/ 004 — PEOPLE</span>
+    <span>PhD · MS · CURRENT · ALUMNI</span>
   </div>
 
-  <h1 class="page-title">Teaching<br><em style="color:var(--accent); font-style:italic">& Students</em></h1>
+  <h1 class="page-title">People</h1>
   <p class="lede" style="max-width:820px; margin-top:20px">
-    The lab has trained five doctoral researchers and over fifty plus master's students since 2012. Alumni have moved into academia, TSMC, UMC, Delta, the automotive and petrochemical industries, and graduate programs abroad.
+    Meet the current researchers and alumni of the Smart Micro-Robotics &amp; Microfluidics Laboratory. Alumni have continued into academia, semiconductor R&amp;D, technology industries, and graduate programs worldwide.
   </p>
 
-  <section class="metrics" style="margin-top:40px">
-    <div class="metric"><div class="n">5</div><div class="l">PhD students<br>advised</div></div>
-    <div class="metric"><div class="n">55+<sup>+</sup></div><div class="l">MS students<br>graduated</div></div>
-    <div class="metric"><div class="n">17</div><div class="l">Student awards<br>as advisor</div></div>
-    <div class="metric"><div class="n">12</div><div class="l">Years of<br>mentorship</div></div>
+  <section class="metrics" style="margin-top:40px; grid-template-columns:repeat(2,1fr)">
+    <div class="metric"><div class="n">5</div><div class="l">PhD researchers<br>current & alumni</div></div>
+    <div class="metric"><div class="n">55<sup>+</sup></div><div class="l">M.S. alumni</div></div>
   </section>
 
-  <section class="section">
-    <div class="section-head">
-      <div><div class="tag-mono">§ 01 — DOCTORAL STUDENTS</div><h2>Ph.D. researchers.</h2></div>
-      <div class="idx">CLASS OF 2019 → 2027</div>
-    </div>
+  <div class="people-filter" role="group" aria-label="Filter laboratory people">
+    <button class="people-pill on" data-people="all">All</button>
+    <button class="people-pill" data-people="current-phd">Current PhD</button>
+    <button class="people-pill" data-people="phd-alumni">PhD Alumni</button>
+    <button class="people-pill" data-people="current-ms">Current M.S.</button>
+    <button class="people-pill" data-people="ms-alumni">M.S. Alumni</button>
+  </div>
+
+  <section class="section people-group" data-group="current-phd">
+    <div class="section-head"><div><div class="tag-mono">§ 01 — CURRENT STUDENTS</div><h2>Current Ph.D. researchers.</h2></div></div>
     <div class="phd-grid">
-      <div class="phd"><div class="cy">CLASS OF 2019</div><div class="nm">Bivas Panigrahi</div><div class="dest">→ Assistant Professor, National Chin-Yi University of Technology (2020–)</div></div>
-      <div class="phd"><div class="cy">CLASS OF 2020</div><div class="nm">Karthick Mani</div><div class="dest">→ Postdoc & industry</div></div>
-      <div class="phd"><div class="cy">CLASS OF 2024</div><div class="nm">Sahadevan Vignesh</div><div class="dest">→ CTCI Research Scholar (2022)</div></div>
-      
-      <div class="phd"><div class="cy">CLASS OF 2025</div><div class="nm">Dineshkumar Loganathan</div><div class="dest">→ Lead author on 17 recent Adv. Mater. Tech. & Lab Chip papers</div></div>
-      <div class="phd"><div class="cy">CLASS OF 2027</div><div class="nm">Prashant Kishor Sharma</div><div class="dest">→ Lead author on 7 recent Adv. Intelligent. Systems & iScience papers</div></div>    </div>
+      <div class="phd"><div class="cy">CLASS OF 2026</div><div class="nm">Dineshkumar Loganathan</div><div class="dest">Lead author on recent Advanced Materials Technologies and Lab on a Chip papers</div></div>
+      <div class="phd"><div class="cy">CLASS OF 2027</div><div class="nm">Prashant Kishor Sharma</div><div class="dest">Lead author on recent Advanced Intelligent Systems and iScience papers</div></div>
+    </div>
   </section>
 
-  <section class="section">
-    <div class="section-head">
-      <div><div class="tag-mono">§ 02 — MASTER'S COHORTS</div><h2>M.S. alumni by class year.</h2></div>
-      <div class="idx">2014 → 2024</div>
+  <section class="section people-group" data-group="phd-alumni">
+    <div class="section-head"><div><div class="tag-mono">§ 02 — ALUMNI</div><h2>Ph.D. alumni.</h2></div></div>
+    <div class="phd-grid">
+      <div class="phd"><div class="cy">CLASS OF 2019</div><div class="nm">Bivas Panigrahi</div><div class="dest">Assistant Professor, National Chin-Yi University of Technology</div></div>
+      <div class="phd"><div class="cy">CLASS OF 2020</div><div class="nm">Karthick Mani</div><div class="dest">Postdoctoral research and industry</div></div>
+      <div class="phd"><div class="cy">CLASS OF 2024</div><div class="nm">Sahadevan Vignesh</div><div class="dest">CTCI Research Scholar</div></div>
     </div>
+  </section>
+
+  <section class="section people-group" data-group="current-ms">
+    <div class="section-head"><div><div class="tag-mono">§ 03 — CURRENT STUDENTS</div><h2>Current M.S. researchers.</h2></div></div>
+    <p class="roster-note">The current M.S. student roster will be added when names are available.</p>
+  </section>
+
+  <section class="section people-group" data-group="ms-alumni">
+    <div class="section-head"><div><div class="tag-mono">§ 04 — ALUMNI</div><h2>M.S. alumni.</h2></div><div class="idx">CLASS OF 2014 → 2024</div></div>
     <div class="cohort"><div class="cy">Class of 2014</div><div class="list">林承毅 (TSMC) · 胡雅婷 (AUO) · 林星宏 (Delta Electronics) · 劉冠廷 (INER → MS, Univ. of Florida)</div></div>
-    <div class="cohort"><div class="cy">Class of 2015</div><div class="list">程林瀅 (TSMC & Foxconn R&D)</div></div>
-    <div class="cohort"><div class="cy">Class of 2016</div><div class="list">蔡翔宇 (TSMC) · 張簡琮淳 (UMC R&D) · 徐俊傑 (China Motor → CPC Corp.) · 劉彥亨</div></div>
+    <div class="cohort"><div class="cy">Class of 2015</div><div class="list">程林瀅 (TSMC & Foxconn R&amp;D)</div></div>
+    <div class="cohort"><div class="cy">Class of 2016</div><div class="list">蔡翔宇 (TSMC) · 張簡琮淳 (UMC R&amp;D) · 徐俊傑 (China Motor → CPC Corp.) · 劉彥亨</div></div>
     <div class="cohort"><div class="cy">Class of 2017</div><div class="list">吳祐安 · 黃品宜 · 許玟棠 (Wistron)</div></div>
     <div class="cohort"><div class="cy">Class of 2018</div><div class="list">謝侑哲 (TSMC) · 呂宗益 (TSMC) · Saurabh Hajari · Neha Ghayal · 呂昌鴻 (TSMC)</div></div>
     <div class="cohort"><div class="cy">Class of 2019</div><div class="list">郭泓毅 · 吳允開 · 吳建晉 · 杜秉修 · 李育元</div></div>
-    <div class="cohort"><div class="cy">Class of 2020</div><div class="list">陳逸維 (TSMC) · 蔡肯佑 (TSMC R&D) · 陳韋廷 (TSMC R&D)</div></div>
-    <div class="cohort"><div class="cy">Class of 2021</div><div class="list">王俊方 · 王義傑 (TSMC R&D) · 康君瑋 (TSMC R&D) · 劉安倫 (TSMC) · SatishKumar Subendran</div></div>
+    <div class="cohort"><div class="cy">Class of 2020</div><div class="list">陳逸維 (TSMC) · 蔡肯佑 (TSMC R&amp;D) · 陳韋廷 (TSMC R&amp;D)</div></div>
+    <div class="cohort"><div class="cy">Class of 2021</div><div class="list">王俊方 · 王義傑 (TSMC R&amp;D) · 康君瑋 (TSMC R&amp;D) · 劉安倫 (TSMC) · SatishKumar Subendran</div></div>
     <div class="cohort"><div class="cy">Class of 2022</div><div class="list">陳少宇 · 吳書衡 · 吳秉樺 · 施柏爾</div></div>
     <div class="cohort"><div class="cy">Class of 2023</div><div class="list">莊穎 · 高林子恩 · 劉邦偉 · 楊凱翔 · 謝佳玲</div></div>
     <div class="cohort"><div class="cy">Class of 2024</div><div class="list">歐辰億 · 許朝尉 · 陳銘龍 · 鄭家妡 · 鄭至玹</div></div>
-  </section>
-
-  <section class="section" style="border-bottom:none">
-    <div class="section-head">
-      <div><div class="tag-mono">§ 03 — STUDENT RECOGNITION</div><h2>Awards as advisor.</h2></div>
-    </div>
-    <div class="award"><div class="yr">'22</div><div><h3 class="tt">CTCI Research Scholar for International Graduate Students</h3><div class="or">Advised: Vignesh Sahadevan · 財團法人中技社境外生研究獎學金</div></div></div>
-    <div class="award"><div class="yr">'21</div><div><h3 class="tt">Best PhD Dissertation Award, Lam Research</h3><div class="or">Advised: Bivas Panigrahi · 柯林博士論文獎</div></div></div>
-    <div class="award"><div class="yr">'20</div><div><h3 class="tt">Excellent Oral Paper Award, 23rd Nano Engineering & Microsystem Technology Conf.</h3><div class="or">Advised: SatishKumar Subendran & 康君瑋</div></div></div>
-    <div class="award"><div class="yr">'19</div><div><h3 class="tt">Best Master Thesis Award · Honorary Poster · CIE Outstanding</h3><div class="or">Advised: 呂昌鴻 · Bivas Panigrahi · 吳允開</div></div></div>
-    <div class="award"><div class="yr">'19</div><div><h3 class="tt">IEEE NEMS 2019 — Best Conference & Best Student Paper Nominations</h3><div class="or">Advised: Bivas Panigrahi · Thailand</div></div></div>
-    <div class="award"><div class="yr">'17</div><div><h3 class="tt">CTCI Foundation Scholarship — Lift Grant</h3><div class="or">Advised: Bivas Panigrahi</div></div></div>
-    <div class="award"><div class="yr">'16</div><div><h3 class="tt">Outstanding Award, National Microfabrication Competition</h3><div class="or">Advised: 蔡翔宇 & 徐俊傑</div></div></div>
-    <div class="award"><div class="yr">'15</div><div><h3 class="tt">Distinct Award · Best Podium Oral · TSMC-NCKU Outstanding · CIE Second Prize</h3><div class="or">Advised: 蔡翔宇 · 吳祐安 · 徐俊傑 · 陳兆陽 · 楊育璿</div></div></div>
-    <div class="award"><div class="yr">'15</div><div><h3 class="tt">IEEE NEMS 2015 — Best Conference & Best Student Paper Nominations</h3><div class="or">Advised: 張簡琮淳 · Karthick Mani · only 10 finalists</div></div></div>
-    <div class="award"><div class="yr">'13</div><div><h3 class="tt">20th National CFD Conf. — Student Finalist & Gallery of Fluid Motion</h3><div class="or">Advised: 胡雅婷 & 林承毅</div></div></div>
-    <div class="award"><div class="yr">'12</div><div><h3 class="tt">Best Poster Award, MRS-T Annual Meeting</h3><div class="or">Advised: 胡雅婷 & 林承毅 · 1 awarded out of 48 entries</div></div></div>
   </section>
 
 </main>
@@ -1377,8 +1393,23 @@
     <div class="award"><div class="yr">'12</div><div><h3 class="tt">Newly-Appointed NSC Research Fellow Award</h3><div class="or">National Science Council, Taiwan · NSC 101-2811-E-011-601</div></div></div>
   </section>
 
+  <section class="section">
+    <div class="section-head"><div><div class="tag-mono">§ 07 — STUDENT RECOGNITION</div><h2>Awards as advisor.</h2></div></div>
+    <div class="award"><div class="yr">'22</div><div><h3 class="tt">CTCI Research Scholar for International Graduate Students</h3><div class="or">Advised: Vignesh Sahadevan · 財團法人中技社境外生研究獎學金</div></div></div>
+    <div class="award"><div class="yr">'21</div><div><h3 class="tt">Best PhD Dissertation Award, Lam Research</h3><div class="or">Advised: Bivas Panigrahi · 柯林博士論文獎</div></div></div>
+    <div class="award"><div class="yr">'20</div><div><h3 class="tt">Excellent Oral Paper Award, 23rd Nano Engineering & Microsystem Technology Conf.</h3><div class="or">Advised: SatishKumar Subendran & 康君瑋</div></div></div>
+    <div class="award"><div class="yr">'19</div><div><h3 class="tt">Best Master Thesis Award · Honorary Poster · CIE Outstanding</h3><div class="or">Advised: 呂昌鴻 · Bivas Panigrahi · 吳允開</div></div></div>
+    <div class="award"><div class="yr">'19</div><div><h3 class="tt">IEEE NEMS 2019 — Best Conference & Best Student Paper Nominations</h3><div class="or">Advised: Bivas Panigrahi · Thailand</div></div></div>
+    <div class="award"><div class="yr">'17</div><div><h3 class="tt">CTCI Foundation Scholarship — Lift Grant</h3><div class="or">Advised: Bivas Panigrahi</div></div></div>
+    <div class="award"><div class="yr">'16</div><div><h3 class="tt">Outstanding Award, National Microfabrication Competition</h3><div class="or">Advised: 蔡翔宇 & 徐俊傑</div></div></div>
+    <div class="award"><div class="yr">'15</div><div><h3 class="tt">Distinct Award · Best Podium Oral · TSMC-NCKU Outstanding · CIE Second Prize</h3><div class="or">Advised: 蔡翔宇 · 吳祐安 · 徐俊傑 · 陳兆陽 · 楊育璿</div></div></div>
+    <div class="award"><div class="yr">'15</div><div><h3 class="tt">IEEE NEMS 2015 — Best Conference & Best Student Paper Nominations</h3><div class="or">Advised: 張簡琮淳 · Karthick Mani · only 10 finalists</div></div></div>
+    <div class="award"><div class="yr">'13</div><div><h3 class="tt">20th National CFD Conf. — Student Finalist & Gallery of Fluid Motion</h3><div class="or">Advised: 胡雅婷 & 林承毅</div></div></div>
+    <div class="award"><div class="yr">'12</div><div><h3 class="tt">Best Poster Award, MRS-T Annual Meeting</h3><div class="or">Advised: 胡雅婷 & 林承毅 · 1 awarded out of 48 entries</div></div></div>
+  </section>
+
   <section class="section" style="border-bottom:none">
-    <div class="section-head"><div><div class="tag-mono">§ 07 — CONTACT</div><h2>Get in touch.</h2></div></div>
+    <div class="section-head"><div><div class="tag-mono">§ 08 — CONTACT</div><h2>Get in touch.</h2></div></div>
     <div class="hero-card" style="max-width:640px">
       <div class="kv"><div class="k">Affiliation</div><div>National Tsing Hua University<br>Hsinchu, Taiwan</div></div>
       <div class="kv"><div class="k">Laboratory</div><div>Smart Micro-Robotics &amp; Microfluidics Laboratory (SML)</div></div>
@@ -1424,6 +1455,20 @@
       const y = p.dataset.year;
       items.forEach(it => {
         it.style.display = (y === 'all' || it.dataset.yr === y) ? '' : 'none';
+      });
+    });
+  });
+
+  // people filter
+  const peoplePills = document.querySelectorAll('.people-pill');
+  const peopleGroups = document.querySelectorAll('.people-group');
+  peoplePills.forEach(p => {
+    p.addEventListener('click', () => {
+      peoplePills.forEach(x => x.classList.remove('on'));
+      p.classList.add('on');
+      const group = p.dataset.people;
+      peopleGroups.forEach(section => {
+        section.hidden = group !== 'all' && section.dataset.group !== group;
       });
     });
   });
